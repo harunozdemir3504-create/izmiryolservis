@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://www.izmiryolyardimservis.com/sitemap.xml
+Sitemap: https://izmiryolservis.com.tr/sitemap.xml
