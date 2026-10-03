@@ -46,6 +46,9 @@ izmir-yol-yardim/
 ├── index.html       # Ana web sitesi (HTML5, Tailwind CSS, Lucide Icons, SEO Meta)
 ├── style.css        # Özel animasyonlar, cam efekti (glassmorphism), renk paleti
 ├── script.js        # Dinamik ilçeler, WhatsApp robotu, galeri filtresi, akordeon SSS
+├── sitemap.xml      # Google ve arama motorları için görsel destekli site haritası
+├── robots.txt       # Arama motoru tarama kuralları ve sitemap yönlendirmesi
+├── baslat.bat       # Windows tek tıkla tarayıcıda çalıştırma scripti
 └── README.md        # Proje tanıtım ve kullanım kılavuzu
 ```
 

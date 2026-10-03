@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Ana Sayfa (İzmir Yol Yardım & Eve Gelen Tamir Ustası Yusuf Musab Özdemir) -->
+  <url>
+    <loc>https://www.izmiryolyardimservis.com/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    
+    <!-- Hero Banner Görseli -->
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&amp;fit=crop&amp;w=1200&amp;q=80</image:loc>
+      <image:title>İzmir Yol Yardım ve Eve Gelen Tamir Ustası Yusuf Musab Özdemir</image:title>
+      <image:caption>İzmir 7/24 Acil Oto Çekici ve Kapıda Mobil Oto Tamir Servisi 0536 429 08 61</image:caption>
+      <image:geo_location>İzmir, Türkiye</image:geo_location>
+    </image:image>
+
+    <!-- Kapıda Motor Bakımı -->
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&amp;fit=crop&amp;w=1200&amp;q=80</image:loc>
+      <image:title>İzmir Eve Gelen Usta Kapıda Periyodik Bakım ve Onarım</image:title>
+      <image:caption>Sanayiye gitmeden evinizin otoparkında periyodik bakım ve arıza onarımı</image:caption>
+      <image:geo_location>İzmir, Türkiye</image:geo_location>
+    </image:image>
+
+    <!-- Yusuf Musab Özdemir Usta Profil -->
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1578844251758-2f71da64c96f?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>Yusuf Musab Özdemir - Mesleki Yeterlilik Belgeli Baş Mekaniker</image:title>
+      <image:caption>Yetkili servis geçmişli baş usta Yusuf Musab Özdemir 0536 429 08 61</image:caption>
+      <image:geo_location>İzmir, Türkiye</image:geo_location>
+    </image:image>
+
+    <!-- 7/24 Oto Kurtarıcı ve Çekici -->
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>İzmir 7/24 Oto Çekici ve Hasarsız Kurtarıcı</image:title>
+      <image:caption>İzmir ve çevre otoyollarda 15-25 dakikada acil çekici ve yol yardım desteği</image:caption>
+      <image:geo_location>İzmir, Türkiye</image:geo_location>
+    </image:image>
+
+    <!-- Bilgisayarlı OBD Arıza Tespiti -->
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>İzmir Bilgisayarlı OBD Arıza Tespiti ve Teşhis</image:title>
+      <image:caption>Yetkili servis düzeyinde lisanslı arıza tespit cihazlarıyla kapıda motor beyni analizi</image:caption>
+      <image:geo_location>İzmir, Türkiye</image:geo_location>
+    </image:image>
+
+    <!-- Akü Takviye ve Değişimi -->
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>İzmir 7/24 Akü Takviye ve Yerinde Sıfır Akü Montajı</image:title>
+      <image:caption>12V ve 24V takviye booster cihazı ve garantili akü çeşitleri</image:caption>
+      <image:geo_location>İzmir, Türkiye</image:geo_location>
+    </image:image>
+
+    <!-- Fren ve Balata Servisi -->
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1625047509168-a7026f36de04?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>İzmir Mobil Lastikçi ve Kapıda Fren Balatası Disk Değişimi</image:title>
+      <image:caption>Yerinde fren balatası, disk değişimi ve lastik yol yardım hizmeti</image:caption>
+      <image:geo_location>İzmir, Türkiye</image:geo_location>
+    </image:image>
+  </url>
+
+  <!-- Eve Gelen Mobil Tamirci Bölümü -->
+  <url>
+    <loc>https://www.izmiryolyardimservis.com/#eve-gelen-tamirci</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 7/24 Hizmetlerimiz -->
+  <url>
+    <loc>https://www.izmiryolyardimservis.com/#hizmetler</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Yusuf Musab Özdemir Usta Belgeleri ve Özgeçmiş -->
+  <url>
+    <loc>https://www.izmiryolyardimservis.com/#yusuf-usta</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Akıllı Talep ve Fiyat Robotu -->
+  <url>
+    <loc>https://www.izmiryolyardimservis.com/#talep-robotu</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Gerçek Sahadaki Fotoğraflar Galerisi -->
+  <url>
+    <loc>https://www.izmiryolyardimservis.com/#galeri</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- İzmir Hizmet İlçeleri ve Otoyollar -->
+  <url>
+    <loc>https://www.izmiryolyardimservis.com/#bolgeler</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Müşteri Yorumları ve Referanslar -->
+  <url>
+    <loc>https://www.izmiryolyardimservis.com/#yorumlar</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <!-- 7/24 İletişim ve Konum -->
+  <url>
+    <loc>https://www.izmiryolyardimservis.com/#iletisim</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>

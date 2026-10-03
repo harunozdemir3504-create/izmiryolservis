@@ -278,3 +278,19 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   transform: skewX(-25deg);
   animation: shine 4s infinite ease-in-out;
 }
+
+/* Mobile Typography & Overflow Safety */
+@media (max-width: 640px) {
+  body {
+    overflow-x: hidden;
+  }
+  h1, h2, h3 {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  .glass-nav {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
