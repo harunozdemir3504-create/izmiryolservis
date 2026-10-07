@@ -36,6 +36,12 @@ Bu web sitesi, İzmir genelinde 7/24 yol yardım, oto kurtarma, akü takviye, la
 
 6. **SEO & Yapısal Veri (Schema.org):**
    - Google aramaları ve yerel haritalar için `AutoRepair`, `EmergencyService` ve `Person` JSON-LD zengin veri etiketleri.
+   - Geo Meta etiketleri (`TR-35`, `38.4237; 27.1428`) ve `hasMap` / `areaServed` harita tanımları.
+
+7. **Google Haritalar & Canlı GPS Konum Paylaşımı:**
+   - İnteraktif Google Haritalar entegrasyonu ve hizmet istasyonları (Bornova, Karşıyaka, Gaziemir, Çeşme).
+   - "Canlı GPS Konumumu Bul ve Gönder" butonu ile yolda kalan sürücünün anlık koordinatlarını tek tıkla Yusuf Usta'ya WhatsApp'tan aktarma.
+   - Google Haritalar'da tek tıkla yol tarifi alma.
 
 ---
 

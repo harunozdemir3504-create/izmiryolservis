@@ -242,4 +242,46 @@ document.addEventListener('DOMContentLoaded', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
+
+  // 10. Smart GPS Live Location Detection & WhatsApp Sender
+  const sendLocationBtn = document.getElementById('sendCurrentLocationBtn');
+  if (sendLocationBtn) {
+    sendLocationBtn.addEventListener('click', () => {
+      if (!navigator.geolocation) {
+        alert('Tarayıcınız anlık GPS konum servisini desteklemiyor. WhatsApp üzerinden sohbet ekranında ataç simgesine basıp "Konum Paylaş" seçeneğini kullanabilirsiniz.');
+        window.open('https://wa.me/905364290861?text=Merhaba%20Yusuf%20Usta,%20yolda%20kaldım.%20Konumumu%20iletiyorum.', '_blank');
+        return;
+      }
+
+      sendLocationBtn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> <span>GPS Konumunuz Alınıyor...</span>';
+      if (window.lucide) lucide.createIcons();
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude.toFixed(6);
+          const lng = position.coords.longitude.toFixed(6);
+          const mapsUrl = `https://maps.google.com/?q=${lat},${lng}`;
+          const message = `Merhaba Yusuf Usta,\n\nİzmir Yol Yardım sitenizden yazıyorum. Bulunduğum canlı GPS konumum:\n${mapsUrl}\n\nAcil yol yardım / mobil tamirci desteği rica ediyorum.`;
+
+          window.open(`https://wa.me/905364290861?text=${encodeURIComponent(message)}`, '_blank');
+
+          sendLocationBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4 text-emerald-300"></i> <span>Konum WhatsApp\'a Gönderildi!</span>';
+          if (window.lucide) lucide.createIcons();
+
+          setTimeout(() => {
+            sendLocationBtn.innerHTML = '<i data-lucide="crosshair" class="w-4 h-4"></i> <span>Canlı GPS Konumumu Bul ve Yusuf Usta\'ya Gönder</span>';
+            if (window.lucide) lucide.createIcons();
+          }, 4000);
+        },
+        (error) => {
+          alert('GPS konumunuza izin verilmedi veya ulaşılamadı. WhatsApp üzerinden doğrudan sohbet ekranında "Konum Paylaş" simgesine basabilirsiniz.');
+          window.open('https://wa.me/905364290861?text=Merhaba%20Yusuf%20Usta,%20yolda%20kaldım.%20Konumumu%20iletiyorum.', '_blank');
+          sendLocationBtn.innerHTML = '<i data-lucide="crosshair" class="w-4 h-4"></i> <span>Canlı GPS Konumumu Bul ve Yusuf Usta\'ya Gönder</span>';
+          if (window.lucide) lucide.createIcons();
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    });
+  }
 });
+
