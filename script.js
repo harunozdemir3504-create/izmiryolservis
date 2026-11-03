@@ -331,6 +331,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
+      const tabBtns = document.querySelectorAll('.hero-tab-btn');
+      tabBtns.forEach((tab, i) => {
+        if (i === index) {
+          tab.classList.remove('bg-slate-800', 'text-slate-300');
+          tab.classList.add('bg-amber-500', 'text-black', 'shadow');
+        } else {
+          tab.classList.remove('bg-amber-500', 'text-black', 'shadow');
+          tab.classList.add('bg-slate-800', 'text-slate-300');
+        }
+      });
+
       currentSlide = index;
     }
 
@@ -356,6 +367,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     carouselDots.forEach((dot, idx) => {
       dot.addEventListener('click', () => {
+        goToSlide(idx);
+        startAutoPlay();
+      });
+    });
+
+    const tabBtns = document.querySelectorAll('.hero-tab-btn');
+    tabBtns.forEach((btn, idx) => {
+      btn.addEventListener('click', () => {
         goToSlide(idx);
         startAutoPlay();
       });
