@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>İzmir Yol Servis - Instagram Reels Video Stüdyosu (1080x1920)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;0,700;0,800;0,900;1,800;1,900&display=swap" rel="stylesheet">
+  <script src="reels-assets/images-data.js"></script>
+  <style>
+    body {
+      font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0%, #090d16 100%);
+      color: #f8fafc;
+    }
+    .canvas-wrapper {
+      aspect-ratio: 9 / 16;
+      max-height: 82vh;
+      box-shadow: 0 25px 60px -15px rgba(249, 115, 22, 0.35), 0 0 0 2px rgba(255,255,255,0.1);
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 1.25rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col lg:flex-row items-center justify-center p-4 lg:p-8 gap-8">
+
+  <!-- Left: Reels 9:16 Video Preview -->
+  <div class="relative canvas-wrapper bg-black rounded-3xl overflow-hidden flex-shrink-0">
+    <canvas id="reelsCanvas" width="1080" height="1920"></canvas>
+
+    <!-- Play Overlay Button when paused -->
+    <button id="overlayPlayBtn" onclick="startPreviewWithAudio()" class="absolute inset-0 bg-black/50 backdrop-blur-sm flex flex-col items-center justify-center gap-4 transition-opacity duration-300 group cursor-pointer">
+      <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-orange-600 to-amber-400 flex items-center justify-center shadow-2xl shadow-orange-500/50 group-hover:scale-110 transition-transform">
+        <svg class="w-10 h-10 text-black ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <span class="font-extrabold text-white text-lg tracking-wider uppercase bg-black/70 px-4 py-1.5 rounded-full border border-orange-500/40">
+        Sesli Önizlemeyi Başlat
+      </span>
+    </button>
+  </div>
+
+  <!-- Right: Control & Export Panel -->
+  <div class="max-w-lg w-full bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/15 border border-orange-500/30 text-orange-400 text-xs font-extrabold uppercase tracking-wider">
+      <span>🎬 Instagram Reels & TikTok Hazır Edit</span>
+      <span>• 1080x1920 Full HD</span>
+    </div>
+
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-black text-white leading-tight">
+        İzmir Yol Servis & Yol Yardım <span class="text-orange-500">Reels Videosu</span>
+      </h1>
+      <p class="text-slate-400 text-sm mt-2 leading-relaxed">
+        Yusuf Musab Özdemir Usta için özel üretilmiş 4 sinematik dikey sahne, hızlandırılmış zoom geçişleri, ışık efektleri, dinamik bas ritmi ve hareketli tipografi içerir.
+      </p>
+    </div>
+
+    <!-- Timeline Scene Pills -->
+    <div class="space-y-2">
+      <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Video Sahne Akışı (16 Saniye)</div>
+      <div class="grid grid-cols-1 gap-2 text-xs">
+        <button onclick="seekTo(0.2)" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 text-left transition">
+          <span class="font-bold text-white">1. Sahne (0-3.2sn): Yolda Kaldınız mı? (Kanca Giriş)</span>
+          <span class="text-orange-400 font-bold">00:00</span>
+        </button>
+        <button onclick="seekTo(3.4)" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 text-left transition">
+          <span class="font-bold text-white">2. Sahne (3.2-6.6sn): Eve Gelen Belgeli Usta</span>
+          <span class="text-orange-400 font-bold">00:03</span>
+        </button>
+        <button onclick="seekTo(6.8)" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 text-left transition">
+          <span class="font-bold text-white">3. Sahne (6.6-10.0sn): Kapıda Tamir & OBD Arıza Tespit</span>
+          <span class="text-orange-400 font-bold">00:06</span>
+        </button>
+        <button onclick="seekTo(10.2)" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 text-left transition">
+          <span class="font-bold text-white">4. Sahne (10.0-13.0sn): 7/24 Çekici & İzmir Geneli</span>
+          <span class="text-orange-400 font-bold">00:10</span>
+        </button>
+        <button onclick="seekTo(13.2)" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 text-left transition">
+          <span class="font-bold text-white">5. Sahne (13.0-16.0sn): İletişim & Hemen Ara Kapanış</span>
+          <span class="text-orange-400 font-bold">00:13</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="space-y-3 pt-2">
+      <div class="flex gap-3">
+        <button onclick="startPreviewWithAudio()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-extrabold py-3.5 px-4 rounded-2xl border border-slate-600 transition flex items-center justify-center gap-2 text-sm">
+          <span>▶️ Baştan Oynat (Sesli)</span>
+        </button>
+        <button onclick="exportVideoFile()" id="exportBtn" class="flex-1 bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-500 hover:to-amber-400 text-black font-black py-3.5 px-4 rounded-2xl shadow-lg shadow-orange-500/30 transition flex items-center justify-center gap-2 text-sm">
+          <span>⬇️ Videoyu İndir (MP4)</span>
+        </button>
+      </div>
+      <div id="exportStatus" class="hidden text-center text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded-xl py-2.5 px-3">
+        Video kaydediliyor... Lütfen 16 saniye bekleyin.
+      </div>
+    </div>
+
+    <!-- Instagram Caption Copy Box -->
+    <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 space-y-2">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-extrabold text-amber-400 uppercase">📋 Hazır Instagram Açıklaması & Hashtagler</span>
+        <button onclick="copyCaption()" id="copyBtn" class="text-xs bg-slate-800 hover:bg-slate-700 text-white font-bold px-2.5 py-1 rounded-lg transition">Kopyala</button>
+      </div>
+      <textarea id="igCaption" readonly rows="4" class="w-full bg-transparent text-slate-300 text-xs leading-relaxed focus:outline-none resize-none">🚨 İzmir'de yolda mı kaldınız? Ya da sanayiye gitmeye vaktiniz yok mu?
+🔧 Yetkili servis tecrübeli, MYK belgeli Yusuf Musab Özdemir Usta tam donanımlı mobil servis aracıyla kapınıza geliyor!
+✅ Kapıda Periyodik Bakım (Yağ & Filtre)
+✅ Bilgisayarlı OBD Arıza Tespiti
+✅ 7/24 Oto Çekici, Akü Takviye & Yol Yardım
+📞 Hemen Ara: 0536 429 08 61
+🌐 izmiryolservis.com.tr
+
+#izmiryolyardım #izmiryolservis #izmirototamir #mobilotoservis #evegelentamirci #izmirçekici #otokurtarma #bornova #karşıyaka #buca #konak #çiğli</textarea>
+    </div>
+  </div>
+
+<script>
+const canvas = document.getElementById('reelsCanvas');
+const ctx = canvas.getContext('2d');
+const W = 1080;
+const H = 1920;
+const TOTAL_DURATION = 16.0; // seconds
+
+// Load embedded base64 images
+const imgs = {};
+const imgKeys = ['scene1', 'scene2', 'scene3', 'scene4'];
+let loadedCount = 0;
+
+imgKeys.forEach(k => {
+  const im = new Image();
+  im.onload = () => { loadedCount++; };
+  im.src = (window.REELS_IMAGES && window.REELS_IMAGES[k]) ? window.REELS_IMAGES[k] : ('reels-assets/' + k + '.jpg');
+  imgs[k] = im;
+});
+
+// Particles for cinematic sparks
+const sparks = Array.from({ length: 45 }, () => ({
+  x: Math.random() * W,
+  y: Math.random() * H,
+  vx: (Math.random() - 0.5) * 2.2,
+  vy: -1.5 - Math.random() * 4.0,
+  r: 2 + Math.random() * 4.5,
+  alpha: 0.3 + Math.random() * 0.7,
+  hue: 15 + Math.random() * 30
+}));
+
+// Easing utilities
+function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+function easeOutBack(x) {
+  if (x <= 0) return 0;
+  if (x >= 1) return 1;
+  const c1 = 1.70158;
+  const c3 = c1 + 1;
+  return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+}
+function easeOutCubic(x) { return 1 - Math.pow(1 - x, 3); }
+function easeInOutExpo(x) {
+  return x === 0 ? 0 : x === 1 ? 1 : x < 0.5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2;
+}
+
+// Rounded rectangle helper
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+// Draw cover image with zoom, pan, and chromatic flash
+function drawSceneImage(img, scale, panX, panY, shakeAmt = 0) {
+  if (!img || !img.complete || !img.naturalWidth) return;
+  ctx.save();
+  const sx = (Math.random() - 0.5) * shakeAmt;
+  const sy = (Math.random() - 0.5) * shakeAmt;
+  ctx.translate(W / 2 + panX + sx, H / 2 + panY + sy);
+  ctx.scale(scale, scale);
+
+  const imgRatio = img.naturalWidth / img.naturalHeight;
+  const canvasRatio = W / H;
+  let drawW = W, drawH = H;
+  if (imgRatio > canvasRatio) {
+    drawH = H;
+    drawW = H * imgRatio;
+  } else {
+    drawW = W;
+    drawH = W / imgRatio;
+  }
+  ctx.drawImage(img, -drawW / 2, -drawH / 2, drawW, drawH);
+  ctx.restore();
+}
+
+// Top persistent header badge (Instagram Safe Zone)
+function drawTopBrandBar(t) {
+  ctx.save();
+  const y = 95;
+  // Dark glass pill
+  roundRect(ctx, 70, y, W - 140, 88, 44);
+  ctx.fillStyle = 'rgba(10, 14, 23, 0.82)';
+  ctx.fill();
+  ctx.lineWidth = 2.5;
+  ctx.strokeStyle = 'rgba(249, 115, 22, 0.55)';
+  ctx.stroke();
+
+  // Pulsing live dot
+  const pulse = 0.5 + 0.5 * Math.sin(t * 8);
+  ctx.beginPath();
+  ctx.arc(125, y + 44, 12 + pulse * 5, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(239, 68, 68, 0.35)';
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(125, y + 44, 10, 0, Math.PI * 2);
+  ctx.fillStyle = '#ef4444';
+  ctx.fill();
+
+  // Brand name
+  ctx.font = '900 30px Montserrat, sans-serif';
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'left';
+  ctx.fillText('İZMİR ', 152, y + 54);
+  const w1 = ctx.measureText('İZMİR ').width;
+  ctx.fillStyle = '#f97316';
+  ctx.fillText('YOL SERVİS', 152 + w1, y + 54);
+
+  // Right phone badge
+  roundRect(ctx, W - 405, y + 14, 320, 60, 30);
+  const grad = ctx.createLinearGradient(W - 405, 0, W - 85, 0);
+  grad.addColorStop(0, '#ea580c');
+  grad.addColorStop(1, '#f59e0b');
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  ctx.font = '900 26px Montserrat, sans-serif';
+  ctx.fillStyle = '#090d16';
+  ctx.textAlign = 'center';
+  ctx.fillText('📞 0536 429 08 61', W - 245, y + 53);
+  ctx.restore();
+}
+
+// Ember sparks overlay
+function drawSparks(t) {
+  ctx.save();
+  sparks.forEach(s => {
+    s.x += s.vx;
+    s.y += s.vy;
+    if (s.y < -20) { s.y = H + 20; s.x = Math.random() * W; }
+    if (s.x < -20) s.x = W + 20;
+    if (s.x > W + 20) s.x = -20;
+
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `hsla(${s.hue}, 100%, 60%, ${s.alpha})`;
+    ctx.shadowColor = '#f97316';
+    ctx.shadowBlur = 12;
+    ctx.fill();
+  });
+  ctx.restore();
+}
+
+// Diagonal cyber slash transition effect
+function drawTransitionEffect(progress) {
+  // progress goes 0 -> 1 over 0.45s across cut
+  if (progress <= 0 || progress >= 1) return;
+  ctx.save();
+  const intensity = Math.sin(progress * Math.PI);
+
+  // Bright orange/white flash + diagonal speed bars
+  ctx.fillStyle = `rgba(249, 115, 22, ${intensity * 0.45})`;
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.fillStyle = `rgba(255, 255, 255, ${Math.pow(intensity, 3) * 0.65})`;
+  ctx.fillRect(0, 0, W, H);
+
+  // Diagonal speed slashes
+  ctx.translate(W / 2, H / 2);
+  ctx.rotate(-0.35);
+  for (let i = -3; i <= 3; i++) {
+    const offset = (progress - 0.5) * 2400 + i * 260;
+    const barGrad = ctx.createLinearGradient(-W, 0, W, 0);
+    barGrad.addColorStop(0, 'rgba(249,115,22,0)');
+    barGrad.addColorStop(0.5, `rgba(251,191,36,${intensity * 0.9})`);
+    barGrad.addColorStop(1, 'rgba(249,115,22,0)');
+    ctx.fillStyle = barGrad;
+    ctx.fillRect(-W, offset, W * 2, 28);
+  }
+  ctx.restore();
+}
+
+// ================= SCENE 1 (0.0s - 3.2s): YOLDA MI KALDINIZ? =================
+function renderScene1(t) {
+  const localT = t;
+  const dur = 3.2;
+  const p = clamp(localT / dur, 0, 1);
+
+  // Fast punch-in zoom on beat drop, then slow creep zoom
+  const entryZoom = localT < 0.25 ? 1.35 - easeOutCubic(localT / 0.25) * 0.30 : 1.05 + p * 0.10;
+  const shake = localT < 0.3 ? (1 - localT / 0.3) * 26 : 0;
+  drawSceneImage(imgs.scene1, entryZoom, 0, 0, shake);
+
+  // Emergency red/amber hazard strobe overlay
+  const hazardPulse = Math.max(0, Math.sin(t * 14));
+  const vignette = ctx.createRadialGradient(W/2, H/2, H*0.2, W/2, H/2, H*0.65);
+  vignette.addColorStop(0, 'rgba(0,0,0,0.05)');
+  vignette.addColorStop(1, `rgba(220, 38, 38, ${0.25 + hazardPulse * 0.22})`);
+  ctx.fillStyle = vignette;
+  ctx.fillRect(0, 0, W, H);
+
+  // Dark gradient top & bottom for crisp typography
+  const botGrad = ctx.createLinearGradient(0, H * 0.5, 0, H);
+  botGrad.addColorStop(0, 'rgba(9,13,22,0)');
+  botGrad.addColorStop(0.45, 'rgba(9,13,22,0.82)');
+  botGrad.addColorStop(1, 'rgba(9,13,22,0.96)');
+  ctx.fillStyle = botGrad;
+  ctx.fillRect(0, H * 0.5, W, H * 0.5);
+
+  // Alert pill pop-in
+  const p1 = easeOutBack(clamp((localT - 0.15) / 0.35, 0, 1));
+  ctx.save();
+  ctx.translate(W / 2, 1180);
+  ctx.scale(p1, p1);
+  roundRect(ctx, -290, -42, 580, 76, 38);
+  ctx.fillStyle = '#dc2626';
+  ctx.shadowColor = '#ef4444';
+  ctx.shadowBlur = 30;
+  ctx.fill();
+  ctx.font = '900 32px Montserrat, sans-serif';
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'center';
+  ctx.fillText('🚨 7/24 ACİL YOL YARDIM', 0, 8);
+  ctx.restore();
+
+  // Giant Headline Line 1
+  const p2 = easeOutBack(clamp((localT - 0.35) / 0.4, 0, 1));
+  ctx.save();
+  ctx.translate(W / 2, 1315);
+  ctx.scale(p2, p2);
+  ctx.font = 'italic 900 76px Montserrat, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#ffffff';
+  ctx.shadowColor = 'rgba(0,0,0,0.9)';
+  ctx.shadowBlur = 24;
+  ctx.fillText("İZMİR'DE YOLDA MI", 0, 0);
+  ctx.restore();
+
+  // Giant Headline Line 2
+  const p3 = easeOutBack(clamp((localT - 0.55) / 0.4, 0, 1));
+  ctx.save();
+  ctx.translate(W / 2, 1410);
+  ctx.scale(p3, p3);
+  ctx.font = 'italic 900 88px Montserrat, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#fbbf24';
+  ctx.shadowColor = 'rgba(249,115,22,0.8)';
+  ctx.shadowBlur = 30;
+  ctx.fillText('KALDINIZ?', 0, 0);
+  ctx.restore();
+
+  // Subtitle Box
+  const p4 = easeOutCubic(clamp((localT - 0.85) / 0.4, 0, 1));
+  ctx.save();
+  ctx.globalAlpha = p4;
+  ctx.translate(0, (1 - p4) * 40);
+  roundRect(ctx, 85, 1475, W - 170, 135, 28);
+  ctx.fillStyle = 'rgba(30, 41, 59, 0.88)';
+  ctx.fill();
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = '#f97316';
+  ctx.stroke();
+
+  ctx.font = '800 36px Montserrat, sans-serif';
+  ctx.fillStyle = '#f8fafc';
+  ctx.textAlign = 'center';
+  ctx.fillText('Ya da Sanayide Sıra Beklemeye', W / 2, 1532);
+  ctx.fillStyle = '#fb923c';
+  ctx.fillText('Vaktiniz Yok mu?', W / 2, 1582);
+  ctx.restore();
+}
+
+// ================= SCENE 2 (3.2s - 6.6s): EVE GELEN BELGELİ USTA =================
+function renderScene2(t) {
+  const localT = t - 3.2;
+  const dur = 3.4;
+  const p = clamp(localT / dur, 0, 1);
+
+  const scale = 1.03 + p * 0.08;
+  const shake = localT < 0.25 ? (1 - localT / 0.25) * 20 : 0;
+  drawSceneImage(imgs.scene2, scale, 0, -30, shake);
+
+  // Bottom dark gradient (starts below the mechanic's chest so his face is 100% clear)
+  const botGrad = ctx.createLinearGradient(0, H * 0.56, 0, H);
+  botGrad.addColorStop(0, 'rgba(9,13,22,0)');
+  botGrad.addColorStop(0.35, 'rgba(9,13,22,0.88)');
+  botGrad.addColorStop(1, 'rgba(9,13,22,0.98)');
+  ctx.fillStyle = botGrad;
+  ctx.fillRect(0, H * 0.56, W, H * 0.44);
+
+  // Top floating badge (above mechanic's head, below top bar)
+  const pTop = easeOutBack(clamp((localT - 0.15) / 0.35, 0, 1));
+  ctx.save();
+  ctx.translate(W / 2, 245);
+  ctx.scale(pTop, pTop);
+  roundRect(ctx, -380, -38, 760, 76, 38);
+  ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+  ctx.fill();
+  ctx.lineWidth = 2.5;
+  ctx.strokeStyle = '#fbbf24';
+  ctx.stroke();
+  ctx.font = '800 29px Montserrat, sans-serif';
+  ctx.fillStyle = '#fbbf24';
+  ctx.textAlign = 'center';
+  ctx.fillText('🏆 YETKİLİ SERVİS TECRÜBELİ & BELGELİ', 0, 10);
+  ctx.restore();
+
+  // Headline 1: SANAYİYE GİTMEYİN!
+  const p1 = easeOutBack(clamp((localT - 0.25) / 0.38, 0, 1));
+  ctx.save();
+  ctx.translate(W / 2, 1280);
+  ctx.scale(p1, p1);
+  ctx.font = 'italic 900 68px Montserrat, sans-serif';
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'center';
+  ctx.shadowColor = 'rgba(0,0,0,0.9)';
+  ctx.shadowBlur = 20;
+  ctx.fillText('SANAYİYE GİTMEYİN!', 0, 0);
+  ctx.restore();
+
+  // Headline 2: USTA KAPINIZA GELSİN
+  const p2 = easeOutBack(clamp((localT - 0.45) / 0.38, 0, 1));
+  ctx.save();
+  ctx.translate(W / 2, 1368);
+  ctx.scale(p2, p2);
+  ctx.font = 'italic 900 72px Montserrat, sans-serif';
+  ctx.fillStyle = '#f97316';
+  ctx.textAlign = 'center';
+  ctx.shadowColor = 'rgba(249,115,22,0.6)';
+  ctx.shadowBlur = 25;
+  ctx.fillText('USTA KAPINIZA GELSİN', 0, 0);
+  ctx.restore();
+
+  // Master Mechanic Card
+  const p3 = easeOutBack(clamp((localT - 0.7) / 0.4, 0, 1));
+  ctx.save();
+  ctx.translate(W / 2, 1525);
+  ctx.scale(p3, p3);
+  roundRect(ctx, -440, -90, 880, 185, 32);
+  const cardGrad = ctx.createLinearGradient(-440, -90, 440, 95);
+  cardGrad.addColorStop(0, 'rgba(30, 41, 59, 0.95)');
+  cardGrad.addColorStop(1, 'rgba(15, 23, 42, 0.98)');
+  ctx.fillStyle = cardGrad;
+  ctx.shadowColor = 'rgba(249, 115, 22, 0.35)';
+  ctx.shadowBlur = 30;
+  ctx.fill();
+  ctx.lineWidth = 3.5;
+  ctx.strokeStyle = '#f59e0b';
+  ctx.stroke();
+
+  ctx.font = '800 30px Montserrat, sans-serif';
+  ctx.fillStyle = '#94a3b8';
+  ctx.textAlign = 'center';
+  ctx.fillText('BAŞ MEKANİKER & MOBİL SERVİS UZMANI', 0, -28);
+
+  ctx.font = '900 52px Montserrat, sans-serif';
+  ctx.fillStyle = '#fbbf24';
+  ctx.fillText('YUSUF MUSAB ÖZDEMİR', 0, 38);
+
+  ctx.font = '700 26px Montserrat, sans-serif';
+  ctx.fillStyle = '#34d399';
+  ctx.fillText('✔ Garantili İşçilik  •  ✔ Gözünüzün Önünde Onarım', 0, 78);
+  ctx.restore();
+}
+
+// ================= SCENE 3 (6.6s - 10.0s): KAPIDA TAMİR & OBD BAKIM =================
+function renderScene3(t) {
+  const localT = t - 6.6;
+  const dur = 3.4;
+  const p = clamp(localT / dur, 0, 1);
+
+  const scale = 1.12 - p * 0.08;
+  drawSceneImage(imgs.scene3, scale, 0, -40, localT < 0.2 ? 18 : 0);
+
+  // HUD Diagnostic Target Overlay on the Engine
+  ctx.save();
+  const hudAlpha = clamp((localT - 0.2) / 0.3, 0, 0.85);
+  ctx.strokeStyle = `rgba(56, 189, 248, ${hudAlpha})`;
+  ctx.lineWidth = 3;
+  ctx.translate(640, 720);
+  ctx.rotate(t * 0.8);
+  ctx.strokeRect(-90, -90, 180, 180);
+  ctx.beginPath();
+  ctx.arc(0, 0, 120, 0, Math.PI * 1.4);
+  ctx.stroke();
+  ctx.restore();
+
+  // Dark bottom overlay for service checklist
+  const botGrad = ctx.createLinearGradient(0, H * 0.48, 0, H);
+  botGrad.addColorStop(0, 'rgba(9,13,22,0)');
+  botGrad.addColorStop(0.3, 'rgba(9,13,22,0.88)');
+  botGrad.addColorStop(1, 'rgba(9,13,22,0.98)');
+  ctx.fillStyle = botGrad;
+  ctx.fillRect(0, H * 0.48, W, H * 0.52);
+
+  // Section Title
+  const pTitle = easeOutBack(clamp((localT - 0.15) / 0.35, 0, 1));
+  ctx.save();
+  ctx.translate(W / 2, 1085);
+  ctx.scale(pTitle, pTitle);
+  ctx.font = 'italic 900 62px Montserrat, sans-serif';
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'center';
+  ctx.fillText('EVİNİZİN ÖNÜNDE', 0, 0);
+  ctx.fillStyle = '#fbbf24';
+  ctx.fillText('MOBİL OTO SERVİS!', 0, 72);
+  ctx.restore();
+
+  // 3 Animated Service Cards popping in sequentially
+  const items = [
+    { icon: '🛢️', title: 'Kapıda Periyodik Bakım', sub: 'Motor Yağı, Hava, Polen & Yağ Filtresi Değişimi', delay: 0.45 },
+    { icon: '💻', title: 'Bilgisayarlı OBD Arıza Tespiti', sub: 'Nokta Atışı Elektronik & Mekanik Kontroller', delay: 0.75 },
+    { icon: '🛞', title: 'Fren, Balata, Disk & Marş Tamiri', sub: 'Ağır ve Hafif Mekanik İşlemler Kapınızda', delay: 1.05 }
+  ];
+
+  items.forEach((item, idx) => {
+    const prog = easeOutBack(clamp((localT - item.delay) / 0.38, 0, 1));
+    if (prog <= 0) return;
+    const cardY = 1220 + idx * 155;
+    ctx.save();
+    ctx.translate(W / 2 + (1 - prog) * 400, cardY);
+    ctx.globalAlpha = clamp((localT - item.delay) / 0.2, 0, 1);
+
+    roundRect(ctx, -450, 0, 900, 132, 26);
+    ctx.fillStyle = 'rgba(30, 41, 59, 0.92)';
+    ctx.fill();
+    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = idx === 0 ? '#f97316' : idx === 1 ? '#38bdf8' : '#fbbf24';
+    ctx.stroke();
+
+    ctx.font = '56px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(item.icon, -415, 84);
+
+    ctx.font = '900 36px Montserrat, sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(item.title, -325, 58);
+
+    ctx.font = '600 25px Montserrat, sans-serif';
+    ctx.fillStyle = '#cbd5e1';
+    ctx.fillText(item.sub, -325, 100);
+    ctx.restore();
+  });
+}
+
+// ================= SCENE 4 (10.0s - 13.0s): 7/24 ÇEKİCİ & İZMİR GENELİ =================
+function renderScene4(t) {
+  const localT = t - 10.0;
+  const dur = 3.0;
+  const p = clamp(localT / dur, 0, 1);
+
+  const scale = 1.02 + p * 0.09;
+  drawSceneImage(imgs.scene4, scale, 0, -20, localT < 0.2 ? 20 : 0);
+
+  // Dark gradient bottom
+  const botGrad = ctx.createLinearGradient(0, H * 0.52, 0, H);
+  botGrad.addColorStop(0, 'rgba(9,13,22,0)');
+  botGrad.addColorStop(0.35, 'rgba(9,13,22,0.88)');
+  botGrad.addColorStop(1, 'rgba(9,13,22,0.98)');
+  ctx.fillStyle = botGrad;
+  ctx.fillRect(0, H * 0.52, W, H * 0.48);
+
+  // Radar Pulse in upper sky area
+  ctx.save();
+  ctx.translate(W / 2, 370);
+  const rPulse = (localT * 1.4) % 1;
+  ctx.beginPath();
+  ctx.arc(0, 0, 60 + rPulse * 180, 0, Math.PI * 2);
+  ctx.strokeStyle = `rgba(249, 115, 22, ${1 - rPulse})`;
+  ctx.lineWidth = 4;
+  ctx.stroke();
+
+  roundRect(ctx, -360, -42, 720, 84, 42);
+  ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+  ctx.fill();
+  ctx.strokeStyle = '#f97316';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  ctx.font = '900 32px Montserrat, sans-serif';
+  ctx.fillStyle = '#fbbf24';
+  ctx.textAlign = 'center';
+  ctx.fillText('📍 İZMİR TÜM İLÇELERDE 15-30 DK VARIŞ', 0, 12);
+  ctx.restore();
+
+  // Headline
+  const p1 = easeOutBack(clamp((localT - 0.2) / 0.38, 0, 1));
+  ctx.save();
+  ctx.translate(W / 2, 1245);
+  ctx.scale(p1, p1);
+  ctx.font = 'italic 900 70px Montserrat, sans-serif';
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'center';
+  ctx.fillText('7/24 OTO ÇEKİCİ &', 0, 0);
+  ctx.fillStyle = '#f97316';
+  ctx.fillText('ACİL KURTARICI', 0, 80);
+  ctx.restore();
+
+  // Service badges grid (Akü, Lastik, Kurtarıcı)
+  const badges = [
+    '🔋 Yerinde Akü Takviye & Değişim',
+    '🛞 Mobil Lastik & Stepne Yardımı',
+    '🚛 Şehir İçi & Otoyol Çekici'
+  ];
+  badges.forEach((b, i) => {
+    const bp = easeOutBack(clamp((localT - (0.45 + i * 0.2)) / 0.35, 0, 1));
+    if (bp <= 0) return;
+    ctx.save();
+    ctx.translate(W / 2, 1410 + i * 92);
+    ctx.scale(bp, bp);
+    roundRect(ctx, -410, -34, 820, 72, 36);
+    ctx.fillStyle = 'rgba(30, 41, 59, 0.92)';
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(251, 191, 36, 0.6)';
+    ctx.stroke();
+    ctx.font = '800 33px Montserrat, sans-serif';
+    ctx.fillStyle = '#f8fafc';
+    ctx.textAlign = 'center';
+    ctx.fillText(b, 0, 12);
+    ctx.restore();
+  });
+
+  // Districts ticker line
+  ctx.save();
+  ctx.font = '700 25px Montserrat, sans-serif';
+  ctx.fillStyle = '#94a3b8';
+  ctx.textAlign = 'center';
+  ctx.fillText('Konak • Bornova • Karşıyaka • Buca • Çiğli • Gaziemir • Balçova • Çeşme', W / 2, 1715);
+  ctx.restore();
+}
+
+// ================= SCENE 5 (13.0s - 16.0s): CALL TO ACTION OUTRO =================
+function renderScene5(t) {
+  const localT = t - 13.0;
+  const dur = 3.0;
+
+  // Blended dark background with mechanic hero image
+  drawSceneImage(imgs.scene2, 1.12, 0, 0, 0);
+  ctx.fillStyle = 'rgba(9, 13, 22, 0.86)';
+  ctx.fillRect(0, 0, W, H);
+
+  // Radial orange spotlight
+  const rad = ctx.createRadialGradient(W/2, H/2, 50, W/2, H/2, 750);
+  rad.addColorStop(0, 'rgba(249, 115, 22, 0.28)');
+  rad.addColorStop(1, 'rgba(9, 13, 22, 0)');
+  ctx.fillStyle = rad;
+  ctx.fillRect(0, 0, W, H);
+
+  // 5-Star Rating Pill
+  const p1 = easeOutBack(clamp((localT - 0.1) / 0.35, 0, 1));
+  ctx.save();
+  ctx.translate(W / 2, 410);
+  ctx.scale(p1, p1);
+  roundRect(ctx, -310, -42, 620, 84, 42);
+  ctx.fillStyle = 'rgba(30, 41, 59, 0.95)';
+  ctx.fill();
+  ctx.strokeStyle = '#fbbf24';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  ctx.font = '900 32px Montserrat, sans-serif';
+  ctx.fillStyle = '#fbbf24';
+  ctx.textAlign = 'center';
+  ctx.fillText('⭐⭐⭐⭐⭐  %100 Müşteri Memnuniyeti', 0, 11);
+  ctx.restore();
+
+  // Main Brand Title
+  const p2 = easeOutBack(clamp((localT - 0.25) / 0.4, 0, 1));
+  ctx.save();
+  ctx.translate(W / 2, 580);
+  ctx.scale(p2, p2);
+  ctx.font = 'italic 900 84px Montserrat, sans-serif';
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'center';
+  ctx.fillText('İZMİR YOL SERVİS', 0, 0);
+  ctx.font = 'italic 900 64px Montserrat, sans-serif';
+  ctx.fillStyle = '#f97316';
+  ctx.fillText('& 7/24 YOL YARDIM', 0, 82);
+  ctx.restore();
+
+  // Usta Name Box
+  const p3 = easeOutBack(clamp((localT - 0.45) / 0.4, 0, 1));
+  ctx.save();
+  ctx.translate(W / 2, 820);
+  ctx.scale(p3, p3);
+  roundRect(ctx, -420, -75, 840, 150, 30);
+  ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
+  ctx.fill();
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = 'rgba(249, 115, 22, 0.6)';
+  ctx.stroke();
+  ctx.font = '700 28px Montserrat, sans-serif';
+  ctx.fillStyle = '#cbd5e1';
+  ctx.textAlign = 'center';
+  ctx.fillText('YETKİLİ SERVİS BELGELİ USTA', 0, -18);
+  ctx.font = '900 50px Montserrat, sans-serif';
+  ctx.fillStyle = '#fbbf24';
+  ctx.fillText('YUSUF MUSAB ÖZDEMİR', 0, 44);
+  ctx.restore();
+
+  // Giant Pulsing Phone CTA Button
+  const p4 = easeOutBack(clamp((localT - 0.65) / 0.4, 0, 1));
+  const btnPulse = 1 + 0.035 * Math.sin(t * 10);
+  ctx.save();
+  ctx.translate(W / 2, 1110);
+  ctx.scale(p4 * btnPulse, p4 * btnPulse);
+  roundRect(ctx, -450, -105, 900, 210, 55);
+  const ctaGrad = ctx.createLinearGradient(-450, 0, 450, 0);
+  ctaGrad.addColorStop(0, '#dc2626');
+  ctaGrad.addColorStop(0.5, '#ea580c');
+  ctaGrad.addColorStop(1, '#f59e0b');
+  ctx.fillStyle = ctaGrad;
+  ctx.shadowColor = 'rgba(249, 115, 22, 0.75)';
+  ctx.shadowBlur = 45;
+  ctx.fill();
+
+  ctx.font = '800 32px Montserrat, sans-serif';
+  ctx.fillStyle = '#fef08a';
+  ctx.textAlign = 'center';
+  ctx.fillText('📲 NUMARAYI KAYDEDİN • 7/24 HEMEN ARAYIN', 0, -35);
+
+  ctx.font = '900 84px Montserrat, sans-serif';
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText('0536 429 08 61', 0, 55);
+  ctx.restore();
+
+  // WhatsApp & Website Cards
+  const p5 = easeOutBack(clamp((localT - 0.9) / 0.4, 0, 1));
+  ctx.save();
+  ctx.translate(W / 2, 1365);
+  ctx.scale(p5, p5);
+  roundRect(ctx, -420, -48, 840, 96, 48);
+  ctx.fillStyle = '#059669';
+  ctx.fill();
+  ctx.font = '800 34px Montserrat, sans-serif';
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'center';
+  ctx.fillText('💬 WhatsApp Konum Atın, Hemen Gelelim!', 0, 12);
+  ctx.restore();
+
+  const p6 = easeOutBack(clamp((localT - 1.05) / 0.4, 0, 1));
+  ctx.save();
+  ctx.translate(W / 2, 1515);
+  ctx.scale(p6, p6);
+  roundRect(ctx, -370, -45, 740, 90, 45);
+  ctx.fillStyle = 'rgba(30, 41, 59, 0.95)';
+  ctx.fill();
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = '#38bdf8';
+  ctx.stroke();
+  ctx.font = '900 38px Montserrat, sans-serif';
+  ctx.fillStyle = '#38bdf8';
+  ctx.textAlign = 'center';
+  ctx.fillText('🌐 izmiryolservis.com.tr', 0, 14);
+  ctx.restore();
+}
+
+// Main Frame Renderer for any timestamp t in [0, TOTAL_DURATION]
+function renderFrameAt(t) {
+  ctx.clearRect(0, 0, W, H);
+
+  if (t < 3.2) {
+    renderScene1(t);
+  } else if (t < 6.6) {
+    renderScene2(t);
+  } else if (t < 10.0) {
+    renderScene3(t);
+  } else if (t < 13.0) {
+    renderScene4(t);
+  } else {
+    renderScene5(t);
+  }
+
+  // Ember sparks across all scenes
+  drawSparks(t);
+
+  // Transition cuts at 3.2, 6.6, 10.0, 13.0
+  const cuts = [3.2, 6.6, 10.0, 13.0];
+  cuts.forEach(cut => {
+    const dt = (t - (cut - 0.22)) / 0.44;
+    if (dt > 0 && dt < 1) {
+      drawTransitionEffect(dt);
+    }
+  });
+
+  // Persistent Top Brand Header
+  drawTopBrandBar(t);
+
+  // Bottom progress bar
+  ctx.save();
+  ctx.fillStyle = 'rgba(255,255,255,0.18)';
+  ctx.fillRect(0, H - 14, W, 14);
+  const pGrad = ctx.createLinearGradient(0, 0, W, 0);
+  pGrad.addColorStop(0, '#f97316');
+  pGrad.addColorStop(1, '#fbbf24');
+  ctx.fillStyle = pGrad;
+  ctx.fillRect(0, H - 14, W * (t / TOTAL_DURATION), 14);
+  ctx.restore();
+}
+
+// ================= WEB AUDIO API: ENERGETIC TRAP/PHONK BEAT + TRANSITION SFX =================
+function createAudioTrack(audioCtx, destNode) {
+  const now = audioCtx.currentTime + 0.05;
+  const bpm = 124;
+  const beatDur = 60 / bpm; // ~0.4838s
+  const sixteenth = beatDur / 4;
+  const totalSteps = Math.floor(TOTAL_DURATION / sixteenth);
+
+  // Master compressor
+  const comp = audioCtx.createDynamicsCompressor();
+  comp.threshold.setValueAtTime(-14, now);
+  comp.ratio.setValueAtTime(6, now);
+  comp.connect(destNode);
+  if (destNode !== audioCtx.destination) {
+    comp.connect(audioCtx.destination);
+  }
+
+  // Helper: 808 Kick + Sub
+  function playKick(time) {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(145, time);
+    osc.frequency.exponentialRampToValueAtTime(42, time + 0.09);
+    osc.frequency.exponentialRampToValueAtTime(28, time + 0.38);
+
+    gain.gain.setValueAtTime(0.95, time);
+    gain.gain.exponentialRampToValueAtTime(0.001, time + 0.4);
+
+    osc.connect(gain);
+    gain.connect(comp);
+    osc.start(time);
+    osc.stop(time + 0.42);
+  }
+
+  // Helper: Crisp Trap Snare
+  function playSnare(time) {
+    const bufSize = audioCtx.sampleRate * 0.18;
+    const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
+
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buf;
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'highpass';
+    filter.frequency.setValueAtTime(900, time);
+
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.55, time);
+    gain.gain.exponentialRampToValueAtTime(0.01, time + 0.17);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(comp);
+    noise.start(time);
+  }
+
+  // Helper: Hi-Hat
+  function playHat(time, open = false) {
+    const dur = open ? 0.14 : 0.045;
+    const bufSize = Math.floor(audioCtx.sampleRate * dur);
+    const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1);
+
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buf;
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'highpass';
+    filter.frequency.setValueAtTime(6500, time);
+
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.22, time);
+    gain.gain.exponentialRampToValueAtTime(0.005, time + dur);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(comp);
+    noise.start(time);
+  }
+
+  // Helper: Phonk / Bass Synth Pluck
+  const melodyNotes = [110, 110, 130.81, 146.83, 110, 164.81, 146.83, 130.81];
+  function playSynth(time, freq) {
+    const osc = audioCtx.createOscillator();
+    const filter = audioCtx.createBiquadFilter();
+    const gain = audioCtx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(freq, time);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(1600, time);
+    filter.frequency.exponentialRampToValueAtTime(280, time + 0.2);
+
+    gain.gain.setValueAtTime(0.24, time);
+    gain.gain.exponentialRampToValueAtTime(0.008, time + 0.22);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(comp);
+    osc.start(time);
+    osc.stop(time + 0.24);
+  }
+
+  // Helper: Transition Whoosh + Impact Boom
+  function playTransitionWhoosh(time) {
+    const dur = 0.42;
+    const bufSize = Math.floor(audioCtx.sampleRate * dur);
+    const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
+
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buf;
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.Q.setValueAtTime(2.5, time);
+    filter.frequency.setValueAtTime(250, time);
+    filter.frequency.exponentialRampToValueAtTime(3200, time + dur * 0.5);
+    filter.frequency.exponentialRampToValueAtTime(300, time + dur);
+
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.01, time);
+    gain.gain.linearRampToValueAtTime(0.75, time + dur * 0.5);
+    gain.gain.exponentialRampToValueAtTime(0.01, time + dur);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(comp);
+    noise.start(time);
+
+    // Impact boom at peak of cut
+    playKick(time + dur * 0.5);
+  }
+
+  // Schedule 16-second pattern
+  for (let step = 0; step < totalSteps; step++) {
+    const t = now + step * sixteenth;
+    const s16 = step % 16;
+
+    if (s16 === 0 || s16 === 3 || s16 === 6 || s16 === 10) playKick(t);
+    if (s16 === 4 || s16 === 12) playSnare(t);
+    if (step % 2 === 0 || s16 === 7 || s16 === 15) playHat(t, s16 === 14);
+    if (s16 % 2 === 0) {
+      playSynth(t, melodyNotes[(step / 2) % melodyNotes.length]);
+    }
+  }
+
+  // Schedule transition whooshes at exact scene cuts
+  [0.05, 3.0, 6.4, 9.8, 12.8].forEach(cutTime => {
+    playTransitionWhoosh(now + cutTime);
+  });
+}
+
+// ================= PLAYBACK & EXPORT ENGINE =================
+let animReq = null;
+let startTime = performance.now();
+let currentAudioCtx = null;
+
+function loopPreview(nowMs) {
+  const elapsed = ((nowMs - startTime) / 1000) % TOTAL_DURATION;
+  renderFrameAt(elapsed);
+  animReq = requestAnimationFrame(loopPreview);
+}
+
+// Start silent visual preview immediately on load
+requestAnimationFrame(loopPreview);
+
+function seekTo(sec) {
+  startTime = performance.now() - sec * 1000;
+}
+
+function startPreviewWithAudio() {
+  const overlay = document.getElementById('overlayPlayBtn');
+  if (overlay) overlay.classList.add('opacity-0', 'pointer-events-none');
+
+  if (currentAudioCtx) {
+    try { currentAudioCtx.close(); } catch (e) {}
+  }
+  currentAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  createAudioTrack(currentAudioCtx, currentAudioCtx.destination);
+  startTime = performance.now();
+}
+
+async function exportVideoFile() {
+  const btn = document.getElementById('exportBtn');
+  const status = document.getElementById('exportStatus');
+  btn.disabled = true;
+  status.classList.remove('hidden');
+
+  if (currentAudioCtx) {
+    try { currentAudioCtx.close(); } catch (e) {}
+  }
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const dest = audioCtx.createMediaStreamDestination();
+  createAudioTrack(audioCtx, dest);
+
+  const canvasStream = canvas.captureStream(30);
+  const combinedStream = new MediaStream([
+    ...canvasStream.getVideoTracks(),
+    ...dest.stream.getAudioTracks()
+  ]);
+
+  const mimeTypes = [
+    'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
+    'video/mp4',
+    'video/webm;codecs=vp9,opus',
+    'video/webm'
+  ];
+  const selectedMime = mimeTypes.find(m => MediaRecorder.isTypeSupported(m)) || 'video/webm';
+  const ext = selectedMime.includes('mp4') ? 'mp4' : 'webm';
+
+  const recorder = new MediaRecorder(combinedStream, {
+    mimeType: selectedMime,
+    videoBitsPerSecond: 8000000
+  });
+
+  const chunks = [];
+  recorder.ondataavailable = e => { if (e.data && e.data.size > 0) chunks.push(e.data); };
+
+  recorder.onstop = () => {
+    const blob = new Blob(chunks, { type: selectedMime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `izmir-yol-servis-instagram-reels.${ext}`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    status.textContent = '✅ Video başarıyla indirildi!';
+    btn.disabled = false;
+    try { audioCtx.close(); } catch (e) {}
+  };
+
+  startTime = performance.now();
+  recorder.start(200);
+
+  setTimeout(() => {
+    if (recorder.state === 'recording') recorder.stop();
+  }, TOTAL_DURATION * 1000 + 250);
+}
+
+function copyCaption() {
+  const el = document.getElementById('igCaption');
+  el.select();
+  navigator.clipboard.writeText(el.value);
+  const btn = document.getElementById('copyBtn');
+  btn.textContent = '✔ Kopyalandı!';
+  setTimeout(() => { btn.textContent = 'Kopyala'; }, 2000);
+}
+</script>
+</body>
+</html>
