@@ -1,6 +1,6 @@
 /**
- * İzmir Yol Yardım & Eve Gelen Mobil Tamir Servisi
- * Usta: Yusuf Musab Özdemir | Tel: 0536 429 08 61
+ * İzmir Yol Servis & 7/24 Acil Yol Yardım ve Mobil Servis
+ * Tel: 0536 429 08 61
  * Dynamic Logic & Interactive Features
  */
 
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const userPhone = document.getElementById('userPhoneInput')?.value || '';
       const notes = document.getElementById('userNotesInput')?.value || 'Acil yardım rica ediyorum.';
 
-      const message = `Merhaba Yusuf Usta,\n\nİzmir Yol Yardım & Mobil Servis sitenizden ulaşıyorum.\n\n*Hizmet Talebi:* ${serviceType}\n*Bölge/İlçe:* ${districtText}\n*Araç Marka/Model:* ${carBrand}\n*İletişim Numaram:* ${userPhone}\n*Açıklama / Durum:* ${notes}\n\nKonum ve müsaitlik hakkında bilgi alabilir miyim?`;
+      const message = `Merhaba İzmir Yol Servis,\n\nsitenizden ulaşıyorum.\n\n*Hizmet Talebi:* ${serviceType}\n*Bölge/İlçe:* ${districtText}\n*Araç Marka/Model:* ${carBrand}\n*İletişim Numaram:* ${userPhone}\n*Açıklama / Durum:* ${notes}\n\nKonum ve müsaitlik hakkında bilgi alabilir miyim?`;
 
       const encodedMsg = encodeURIComponent(message);
       const whatsappUrl = `https://wa.me/905364290861?text=${encodedMsg}`;
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
     el.addEventListener('click', (e) => {
       e.preventDefault();
       const imgUrl = el.getAttribute('data-img');
-      const caption = el.getAttribute('data-caption') || 'İzmir Yol Yardım & Yusuf Usta';
+      const caption = el.getAttribute('data-caption') || 'İzmir Yol Servis & 7/24 Acil Yardım';
 
       if (lightboxModal && lightboxImg && lightboxCaption) {
         lightboxImg.src = imgUrl;
@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sendLocationBtn.addEventListener('click', () => {
       if (!navigator.geolocation) {
         alert('Tarayıcınız anlık GPS konum servisini desteklemiyor. WhatsApp üzerinden sohbet ekranında ataç simgesine basıp "Konum Paylaş" seçeneğini kullanabilirsiniz.');
-        window.open('https://wa.me/905364290861?text=Merhaba%20Yusuf%20Usta,%20yolda%20kaldım.%20Konumumu%20iletiyorum.', '_blank');
+        window.open('https://wa.me/905364290861?text=Merhaba%20İzmir%20Yol%20Servis,%20yolda%20kaldım.%20Konumumu%20iletiyorum.', '_blank');
         return;
       }
 
@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const lat = position.coords.latitude.toFixed(6);
           const lng = position.coords.longitude.toFixed(6);
           const mapsUrl = `https://maps.google.com/?q=${lat},${lng}`;
-          const message = `Merhaba Yusuf Usta,\n\nİzmir Yol Yardım sitenizden yazıyorum. Bulunduğum canlı GPS konumum:\n${mapsUrl}\n\nAcil yol yardım / mobil tamirci desteği rica ediyorum.`;
+          const message = `Merhaba İzmir Yol Servis,\n\nsitenizden yazıyorum. Bulunduğum canlı GPS konumum:\n${mapsUrl}\n\nAcil yol yardım / mobil servis desteği rica ediyorum.`;
 
           window.open(`https://wa.me/905364290861?text=${encodeURIComponent(message)}`, '_blank');
 
@@ -269,14 +269,14 @@ document.addEventListener('DOMContentLoaded', () => {
           if (window.lucide) lucide.createIcons();
 
           setTimeout(() => {
-            sendLocationBtn.innerHTML = '<i data-lucide="crosshair" class="w-4 h-4"></i> <span>Canlı GPS Konumumu Bul ve Yusuf Usta\'ya Gönder</span>';
+            sendLocationBtn.innerHTML = '<i data-lucide="crosshair" class="w-4 h-4"></i> <span>Canlı GPS Konumumu Bul ve Servise Gönder</span>';
             if (window.lucide) lucide.createIcons();
           }, 4000);
         },
         (error) => {
           alert('GPS konumunuza izin verilmedi veya ulaşılamadı. WhatsApp üzerinden doğrudan sohbet ekranında "Konum Paylaş" simgesine basabilirsiniz.');
-          window.open('https://wa.me/905364290861?text=Merhaba%20Yusuf%20Usta,%20yolda%20kaldım.%20Konumumu%20iletiyorum.', '_blank');
-          sendLocationBtn.innerHTML = '<i data-lucide="crosshair" class="w-4 h-4"></i> <span>Canlı GPS Konumumu Bul ve Yusuf Usta\'ya Gönder</span>';
+          window.open('https://wa.me/905364290861?text=Merhaba%20İzmir%20Yol%20Servis,%20yolda%20kaldım.%20Konumumu%20iletiyorum.', '_blank');
+          sendLocationBtn.innerHTML = '<i data-lucide="crosshair" class="w-4 h-4"></i> <span>Canlı GPS Konumumu Bul ve Servise Gönder</span>';
           if (window.lucide) lucide.createIcons();
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }

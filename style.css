@@ -1,6 +1,6 @@
 /* ===================================================================
-   İzmir Yol Yardım & Eve Gelen Mobil Tamir Servisi
-   Yusuf Musab Özdemir Usta | Tel: 0536 429 08 61
+   İzmir Yol Servis & 7/24 Acil Yol Yardım ve Mobil Servis
+   Tel: 0536 429 08 61
    Custom Styling & Visual Enhancements
    =================================================================== */
 
@@ -18,9 +18,18 @@
   --border-glass: rgba(255, 255, 255, 0.08);
 }
 
-* {
+html, body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   scroll-behavior: smooth;
+  overflow-x: hidden !important;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 h1, h2, h3, h4, h5, h6, .font-heading {
