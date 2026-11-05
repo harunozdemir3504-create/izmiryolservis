@@ -388,5 +388,156 @@ document.addEventListener('DOMContentLoaded', () => {
     goToSlide(0);
     startAutoPlay();
   }
+
+  // 13. Interactive Appointment & Availability Calendar
+  const calendarGrid = document.getElementById('calendarGrid');
+  const calMonthTitle = document.getElementById('calMonthTitle');
+  const calPrevMonth = document.getElementById('calPrevMonth');
+  const calNextMonth = document.getElementById('calNextMonth');
+  const calendarDetailCard = document.getElementById('calendarDetailCard');
+  const calSelectedDateText = document.getElementById('calSelectedDateText');
+  const calCloseDetail = document.getElementById('calCloseDetail');
+  const calCallLink = document.getElementById('calCallLink');
+  const calWaLink = document.getElementById('calWaLink');
+  const timeSlotBtns = document.querySelectorAll('.cal-time-slot');
+
+  if (calendarGrid && calMonthTitle) {
+    const monthNames = [
+      'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+      'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+    ];
+    const dayNames = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+
+    let currentDate = new Date();
+    let selectedDateObj = new Date();
+    let selectedTimeSlot = 'Sabah (09:00 - 13:00)';
+
+    function updateActionLinks(dateObj, slot) {
+      const dayNum = dateObj.getDate();
+      const monthName = monthNames[dateObj.getMonth()];
+      const year = dateObj.getFullYear();
+      const dayName = dayNames[dateObj.getDay()];
+      const fullDateStr = `${dayNum} ${monthName} ${year}, ${dayName}`;
+
+      if (calSelectedDateText) {
+        calSelectedDateText.textContent = fullDateStr;
+      }
+
+      const waMessage = `Merhaba İzmir Yol Servis,\n\n${fullDateStr} tarihi (${slot}) için kapıda bakım / yol servis randevusu almak istiyorum. Müsaitlik durumunu teyit edebilir misiniz?`;
+      if (calWaLink) {
+        calWaLink.href = `https://wa.me/905364290861?text=${encodeURIComponent(waMessage)}`;
+      }
+      if (calCallLink) {
+        calCallLink.href = 'tel:05364290861';
+      }
+    }
+
+    function renderCalendar(date) {
+      calendarGrid.innerHTML = '';
+      const year = date.getFullYear();
+      const month = date.getMonth();
+
+      calMonthTitle.textContent = `${monthNames[month]} ${year}`;
+
+      const firstDayOfMonth = new Date(year, month, 1);
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      // Monday is index 0 in TR calendar: Sunday=0 -> 6, Mon=1 -> 0
+      let startDay = firstDayOfMonth.getDay() - 1;
+      if (startDay === -1) startDay = 6;
+
+      const today = new Date();
+      const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
+
+      // Empty padding cells for previous month
+      for (let i = 0; i < startDay; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'p-2 sm:p-3 rounded-xl bg-slate-950/30 opacity-20 pointer-events-none text-center text-xs';
+        calendarGrid.appendChild(emptyCell);
+      }
+
+      // Real days
+      for (let day = 1; day <= daysInMonth; day++) {
+        const cellDate = new Date(year, month, day);
+        const isToday = isCurrentMonth && today.getDate() === day;
+        const isSelected = selectedDateObj &&
+          selectedDateObj.getFullYear() === year &&
+          selectedDateObj.getMonth() === month &&
+          selectedDateObj.getDate() === day;
+
+        const dayBtn = document.createElement('button');
+        dayBtn.type = 'button';
+        dayBtn.className = `cal-day-cell group relative p-2 sm:p-3 rounded-2xl border text-center transition flex flex-col items-center justify-between min-h-[58px] sm:min-h-[72px] cursor-pointer ${
+          isSelected 
+            ? 'bg-amber-500 text-black border-amber-300 font-black shadow-lg shadow-amber-500/20 scale-105 z-10' 
+            : isToday 
+              ? 'bg-slate-800/90 border-emerald-500/80 text-white font-bold ring-2 ring-emerald-500/30' 
+              : 'bg-slate-900/80 border-slate-800 hover:border-amber-400/50 text-slate-200 hover:bg-slate-800'
+        }`;
+
+        let statusBadge = isSelected
+          ? '<span class="text-[9px] font-black uppercase text-black">Seçildi</span>'
+          : isToday
+            ? '<span class="text-[9px] font-extrabold uppercase bg-emerald-500 text-black px-1 rounded animate-pulse">Bugün</span>'
+            : '<span class="text-[9px] text-emerald-400 font-semibold group-hover:text-amber-300">7/24 Açık</span>';
+
+        dayBtn.innerHTML = `
+          <span class="text-xs sm:text-base font-black ${isSelected ? 'text-black' : isToday ? 'text-emerald-400' : 'text-white'}">${day}</span>
+          ${statusBadge}
+        `;
+
+        dayBtn.addEventListener('click', () => {
+          selectedDateObj = cellDate;
+          renderCalendar(currentDate);
+          updateActionLinks(selectedDateObj, selectedTimeSlot);
+          if (calendarDetailCard) {
+            calendarDetailCard.classList.remove('hidden');
+            calendarDetailCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        });
+
+        calendarGrid.appendChild(dayBtn);
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    if (calPrevMonth) {
+      calPrevMonth.addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar(currentDate);
+      });
+    }
+
+    if (calNextMonth) {
+      calNextMonth.addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar(currentDate);
+      });
+    }
+
+    if (calCloseDetail && calendarDetailCard) {
+      calCloseDetail.addEventListener('click', () => {
+        calendarDetailCard.classList.add('hidden');
+      });
+    }
+
+    timeSlotBtns.forEach(slotBtn => {
+      slotBtn.addEventListener('click', () => {
+        timeSlotBtns.forEach(b => {
+          b.classList.remove('bg-amber-500/20', 'border-amber-500/50', 'text-amber-300', 'font-bold');
+          b.classList.add('bg-slate-800/80', 'border-slate-700', 'text-slate-200', 'font-medium');
+        });
+        slotBtn.classList.remove('bg-slate-800/80', 'border-slate-700', 'text-slate-200', 'font-medium');
+        slotBtn.classList.add('bg-amber-500/20', 'border-amber-500/50', 'text-amber-300', 'font-bold');
+
+        selectedTimeSlot = slotBtn.getAttribute('data-slot') || 'Sabah (09:00 - 13:00)';
+        updateActionLinks(selectedDateObj, selectedTimeSlot);
+      });
+    });
+
+    renderCalendar(currentDate);
+    updateActionLinks(selectedDateObj, selectedTimeSlot);
+  }
 });
 

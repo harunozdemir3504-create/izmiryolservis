@@ -159,6 +159,9 @@
             <a href="#eve-gelen-tamirci" class="hover:text-orange-400 transition flex items-center gap-1.5 text-amber-400">
               <i data-lucide="home" class="w-4 h-4 text-orange-500"></i> Eve Gelen Usta
             </a>
+            <a href="#randevu-takvimi" class="hover:text-amber-400 transition flex items-center gap-1">
+              <i data-lucide="calendar" class="w-4 h-4 text-amber-400"></i> Randevu Takvimi
+            </a>
             <a href="#hizmetler" class="hover:text-orange-400 transition flex items-center gap-1">
               <i data-lucide="truck" class="w-4 h-4 text-slate-400"></i> Hizmetlerimiz
             </a>
@@ -204,6 +207,10 @@
           <a href="#eve-gelen-tamirci" class="mobile-nav-link flex items-center justify-between px-3 py-2 rounded-lg text-amber-400 font-bold bg-amber-500/10">
             <span class="flex items-center gap-2 text-xs sm:text-sm"><i data-lucide="home" class="w-4 h-4"></i> Eve Gelen Tamir Ustası (Özel Servis)</span>
             <span class="text-[10px] bg-amber-500 text-black font-extrabold px-1.5 py-0.5 rounded">VIP</span>
+          </a>
+          <a href="#randevu-takvimi" class="mobile-nav-link flex items-center justify-between px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-800 font-medium text-xs sm:text-sm">
+            <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-4 h-4 text-emerald-400"></i> 7/24 Randevu & Müsaitlik Takvimi</span>
+            <span class="text-[10px] bg-emerald-500/30 text-emerald-300 border border-emerald-500/50 font-bold px-1.5 py-0.5 rounded">CANLI</span>
           </a>
           <a href="#hizmetler" class="mobile-nav-link flex items-center gap-2 px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-800 font-medium text-xs sm:text-sm">
             <i data-lucide="truck" class="w-4 h-4 text-orange-400"></i> Çekici & Yol Yardım
@@ -756,6 +763,114 @@
         </div>
       </div>
 
+      <!-- ================= INTERACTIVE APPOINTMENT & AVAILABILITY CALENDAR ================= -->
+      <div id="randevu-takvimi" class="mt-12 sm:mt-16 bg-slate-900/95 border-2 border-amber-500/50 rounded-3xl p-5 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden">
+        <!-- Ambient Glow -->
+        <div class="absolute -right-16 -top-16 w-64 h-64 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-16 -bottom-16 w-64 h-64 bg-orange-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 text-center max-w-2xl mx-auto mb-6 sm:mb-8 space-y-2">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-bold uppercase tracking-wider">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+            <span>7/24 GÜNCEL RANDEVU & MÜSAİTLİK TAKVİMİ</span>
+          </div>
+          <h3 class="font-heading font-black text-xl sm:text-3xl lg:text-4xl text-white">
+            Günü Seçin, <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">Kapınıza Gelelim</span>
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-300">
+            Aşağıdaki takvimden müsait olduğunuz güne tıklayın; çalışma saatlerimiz ve detaylar açılsın, tek tıkla arayın veya WhatsApp'tan yazın.
+          </p>
+        </div>
+
+        <!-- Month Navigation Header -->
+        <div class="relative z-10 flex items-center justify-between bg-slate-950/80 border border-slate-800 rounded-2xl px-4 py-3 mb-4 sm:mb-6">
+          <button id="calPrevMonth" type="button" aria-label="Önceki Ay" class="p-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-xl transition">
+            <i data-lucide="chevron-left" class="w-5 h-5"></i>
+          </button>
+          <div class="text-center">
+            <h4 id="calMonthTitle" class="font-heading font-bold text-base sm:text-lg text-white">Kasım 2026</h4>
+            <span class="text-[11px] text-emerald-400 font-semibold flex items-center justify-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> 7/24 Sahada & Nöbetçi
+            </span>
+          </div>
+          <button id="calNextMonth" type="button" aria-label="Sonraki Ay" class="p-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-xl transition">
+            <i data-lucide="chevron-right" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Weekdays Grid (Pzt, Sal, Çar, Per, Cum, Cmt, Paz) -->
+        <div class="relative z-10 grid grid-cols-7 gap-1 sm:gap-2 mb-2 text-center text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">
+          <div class="py-1">Pzt</div>
+          <div class="py-1">Sal</div>
+          <div class="py-1">Çar</div>
+          <div class="py-1">Per</div>
+          <div class="py-1">Cum</div>
+          <div class="py-1 text-amber-400">Cmt</div>
+          <div class="py-1 text-orange-400">Paz</div>
+        </div>
+
+        <!-- Calendar Days Grid Container -->
+        <div id="calendarGrid" class="relative z-10 grid grid-cols-7 gap-1.5 sm:gap-2.5">
+          <!-- Populated by JavaScript with active, clickable days -->
+        </div>
+
+        <!-- Dynamic Info Card (Appears/expands when a day is clicked) -->
+        <div id="calendarDetailCard" class="hidden relative z-10 mt-6 sm:mt-8 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border-2 border-amber-500/70 rounded-2xl p-5 sm:p-7 shadow-2xl transition-all duration-300">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-slate-800">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="bg-amber-500 text-black text-[10px] sm:text-xs font-black uppercase px-2 py-0.5 rounded">MÜSAİT</span>
+                <span id="calSelectedDateText" class="font-heading font-black text-base sm:text-xl text-white">5 Kasım 2026, Perşembe</span>
+              </div>
+              <p class="text-xs text-slate-300 mt-1">Mobil servis aracımız ve uzman ustalarımız bu tarihte kapınıza gelmeye hazır.</p>
+            </div>
+            <button id="calCloseDetail" type="button" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition text-xs flex items-center gap-1">
+              <i data-lucide="x" class="w-4 h-4"></i> Kapat
+            </button>
+          </div>
+
+          <!-- Time Slots Selection -->
+          <div class="pt-4 space-y-2">
+            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Uygun Saat Aralığı Seçebilirsiniz:</span>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+              <button type="button" class="cal-time-slot active bg-amber-500/20 border border-amber-500/50 text-amber-300 font-bold p-2.5 rounded-xl hover:bg-amber-500 hover:text-black transition text-center" data-slot="Sabah (09:00 - 13:00)">
+                🌅 Sabah (09:00 - 13:00)
+              </button>
+              <button type="button" class="cal-time-slot bg-slate-800/80 border border-slate-700 text-slate-200 font-medium p-2.5 rounded-xl hover:bg-amber-500 hover:text-black transition text-center" data-slot="Öğle (13:00 - 17:00)">
+                ☀️ Öğle (13:00 - 17:00)
+              </button>
+              <button type="button" class="cal-time-slot bg-slate-800/80 border border-slate-700 text-slate-200 font-medium p-2.5 rounded-xl hover:bg-amber-500 hover:text-black transition text-center" data-slot="Akşam (17:00 - 21:00)">
+                🌆 Akşam (17:00 - 21:00)
+              </button>
+              <button type="button" class="cal-time-slot bg-slate-800/80 border border-slate-700 text-slate-200 font-medium p-2.5 rounded-xl hover:bg-amber-500 hover:text-black transition text-center" data-slot="7/24 Acil Müdahale">
+                🚨 7/24 Acil (Hemen)
+              </button>
+            </div>
+          </div>
+
+          <!-- Action Buttons: Normalden Ara & WhatsApp'tan Yaz -->
+          <div class="pt-5 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <!-- Normalden Ara -->
+            <a id="calCallLink" href="tel:05364290861" class="flex items-center justify-center gap-2.5 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-black text-sm sm:text-base py-3.5 px-4 rounded-xl shadow-lg shadow-red-600/30 transition transform hover:-translate-y-0.5">
+              <i data-lucide="phone-call" class="w-5 h-5 animate-pulse"></i>
+              <span>Normalden Ara: <strong class="tracking-wider">0536 429 08 61</strong></span>
+            </a>
+
+            <!-- WhatsApp'tan Yaz -->
+            <a id="calWaLink" href="https://wa.me/905364290861?text=Merhaba%20İzmir%20Yol%20Servis,%20kapıda%20bakım/tamir%20için%20randevu%20almak%20istiyorum." target="_blank" class="flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm sm:text-base py-3.5 px-4 rounded-xl shadow-lg shadow-emerald-700/25 transition transform hover:-translate-y-0.5">
+              <i data-lucide="message-circle" class="w-5 h-5"></i>
+              <span>WhatsApp'tan Yaz & Randevu Al</span>
+            </a>
+          </div>
+
+          <div class="text-center pt-3 text-[11px] text-slate-400">
+            ℹ️ Randevu veya acil destek için hemen arayabilir ya da WhatsApp'tan konumunuzu paylaşabilirsiniz.
+          </div>
+        </div>
+
+      </div>
+
     </div>
   </section>
 
@@ -852,11 +967,14 @@
                 <div class="text-xs text-slate-400">7/24 Servis Yetkilisi İle Doğrudan Görüşün:</div>
                 <div class="text-base sm:text-lg font-black text-amber-400 tracking-wider">0536 429 08 61</div>
               </div>
-              <div class="flex items-center space-x-2 w-full sm:w-auto">
-                <a href="tel:05364290861" class="flex-1 sm:flex-none flex items-center justify-center gap-1.5 bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs py-2.5 px-4 rounded-xl transition">
-                  <i data-lucide="phone-call" class="w-4 h-4"></i> Hemen Ara
+              <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                <a href="#randevu-takvimi" class="flex-1 sm:flex-none flex items-center justify-center gap-1.5 bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs py-2.5 px-3.5 rounded-xl transition shadow-md shadow-amber-500/20">
+                  <i data-lucide="calendar" class="w-4 h-4"></i> Randevu Takvimi
                 </a>
-                <a href="https://wa.me/905364290861?text=Merhaba%20İzmir%20Yol%20Servis,%20servis%20desteği%20almak%20istiyorum." target="_blank" class="flex-1 sm:flex-none flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2.5 px-4 rounded-xl transition">
+                <a href="tel:05364290861" class="flex-1 sm:flex-none flex items-center justify-center gap-1.5 bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs py-2.5 px-3 rounded-xl transition">
+                  <i data-lucide="phone-call" class="w-4 h-4"></i> Ara
+                </a>
+                <a href="https://wa.me/905364290861?text=Merhaba%20İzmir%20Yol%20Servis,%20servis%20desteği%20almak%20istiyorum." target="_blank" class="flex-1 sm:flex-none flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2.5 px-3 rounded-xl transition">
                   <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp
                 </a>
               </div>
@@ -1908,13 +2026,13 @@
   <!-- ================= MOBILE FIXED BOTTOM ACTION BAR ================= -->
   <div class="mobile-sticky-bar">
     <div class="grid grid-cols-2 gap-2">
-      <a href="tel:05364290861" class="flex items-center justify-center gap-2 bg-gradient-to-r from-red-600 to-orange-600 text-white font-extrabold text-xs sm:text-sm py-3 px-3 rounded-xl shadow-lg shadow-red-600/30">
-        <i data-lucide="phone-call" class="w-4 h-4 animate-bounce"></i>
-        <span>Hemen Ara (0536 429 08 61)</span>
+      <a href="tel:05364290861" class="flex items-center justify-center gap-1.5 bg-gradient-to-r from-red-600 to-orange-600 text-white font-extrabold text-xs py-3 px-2 rounded-xl shadow-lg shadow-red-600/30 whitespace-nowrap">
+        <i data-lucide="phone-call" class="w-4 h-4 animate-bounce shrink-0"></i>
+        <span>Ara: 0536 429 08 61</span>
       </a>
 
-      <a href="https://wa.me/905364290861?text=Merhaba%20İzmir%20Yol%20Servis,%20acil%20yol%20yardım%20için%20yazıyorum." target="_blank" class="flex items-center justify-center gap-2 bg-emerald-600 text-white font-extrabold text-xs sm:text-sm py-3 px-3 rounded-xl shadow-lg shadow-emerald-700/30">
-        <i data-lucide="message-circle" class="w-4 h-4"></i>
+      <a href="https://wa.me/905364290861?text=Merhaba%20İzmir%20Yol%20Servis,%20acil%20yol%20yardım%20için%20yazıyorum." target="_blank" class="flex items-center justify-center gap-1.5 bg-emerald-600 text-white font-extrabold text-xs py-3 px-2 rounded-xl shadow-lg shadow-emerald-700/30 whitespace-nowrap">
+        <i data-lucide="message-circle" class="w-4 h-4 shrink-0"></i>
         <span>WhatsApp Konum</span>
       </a>
     </div>
