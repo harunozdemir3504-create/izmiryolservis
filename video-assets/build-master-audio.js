@@ -3,7 +3,7 @@ const path = require('path');
 
 const ROOT = 'C:/Users/Harun/.gemini/antigravity/scratch/izmir-yol-yardim';
 const VA = ROOT + '/video-assets';
-const VDIR = VA + '/voice-pro';
+const VDIR = VA + '/voice-deep';
 
 function readWav(filePath) {
   const b = fs.readFileSync(filePath);
@@ -26,7 +26,6 @@ function readWav(filePath) {
   throw new Error('No data chunk in ' + filePath);
 }
 
-// Resample from 16kHz to 48kHz with smooth linear interpolation
 function resampleTo48k(data, fromSr, toSr = 48000) {
   const ratio = toSr / fromSr;
   const outLen = Math.round(data.length * ratio);
@@ -42,53 +41,103 @@ function resampleTo48k(data, fromSr, toSr = 48000) {
   return out;
 }
 
-// 48kHz timeline
+// Biquad Low-Shelf Filter for deep chest resonance
+function makeLowShelf(sr, freq, gainDb) {
+  const A = Math.pow(10, gainDb / 40);
+  const w0 = 2 * Math.PI * freq / sr;
+  const cosw = Math.cos(w0);
+  const sinw = Math.sin(w0);
+  const S = 1;
+  const alpha = sinw / 2 * Math.sqrt((A + 1 / A) * (1 / S - 1) + 2);
+  const b0 = A * ((A + 1) - (A - 1) * cosw + 2 * Math.sqrt(A) * alpha);
+  const b1 = 2 * A * ((A - 1) - (A + 1) * cosw);
+  const b2 = A * ((A + 1) - (A - 1) * cosw - 2 * Math.sqrt(A) * alpha);
+  const a0 = (A + 1) + (A - 1) * cosw + 2 * Math.sqrt(A) * alpha;
+  const a1 = -2 * ((A - 1) + (A + 1) * cosw);
+  const a2 = (A + 1) + (A - 1) * cosw - 2 * Math.sqrt(A) * alpha;
+  return { b0: b0/a0, b1: b1/a0, b2: b2/a0, a1: a1/a0, a2: a2/a0, x1: 0, x2: 0, y1: 0, y2: 0 };
+}
+
+// Biquad Peak Filter for voice body
+function makePeak(sr, freq, gainDb, Q = 1.0) {
+  const A = Math.pow(10, gainDb / 40);
+  const w0 = 2 * Math.PI * freq / sr;
+  const alpha = Math.sin(w0) / (2 * Q);
+  const b0 = 1 + alpha * A;
+  const b1 = -2 * Math.cos(w0);
+  const b2 = 1 - alpha * A;
+  const a0 = 1 + alpha / A;
+  const a1 = -2 * Math.cos(w0);
+  const a2 = 1 - alpha / A;
+  return { b0: b0/a0, b1: b1/a0, b2: b2/a0, a1: a1/a0, a2: a2/a0, x1: 0, x2: 0, y1: 0, y2: 0 };
+}
+
+function processBiquad(f, x) {
+  const y = f.b0 * x + f.b1 * f.x1 + f.b2 * f.x2 - f.a1 * f.y1 - f.a2 * f.y2;
+  f.x2 = f.x1; f.x1 = x;
+  f.y2 = f.y1; f.y1 = y;
+  return y;
+}
+
 const SR = 48000;
 const TIMINGS = [
-  { id: 'd1_emre', start: 0.8 },
-  { id: 'd2_mert', start: 4.4 },
-  { id: 'd3_emre', start: 8.8 },
-  { id: 'd4_mert', start: 20.8 },
-  { id: 'd5_emre', start: 34.5 }
+  { id: 'd1_emre', start: 0.4 },
+  { id: 'd2_mert', start: 3.3 },
+  { id: 'd3_emre', start: 6.8 },
+  { id: 'd4_mert', start: 15.3 },
+  { id: 'd5_emre', start: 26.5 }
 ];
 
-const totalDur = 44.0; // 44 seconds total video
+const totalDur = 35.0; // tight 35 seconds total
 const totalSamples = Math.round(totalDur * SR);
 const left = new Float32Array(totalSamples);
 const right = new Float32Array(totalSamples);
 
-// Mix voices
+// Process each voice clip with Deep Male Voice DSP
 TIMINGS.forEach(item => {
   const wav = readWav(path.join(VDIR, item.id + '.wav'));
   const resampled = resampleTo48k(wav.data, wav.sampleRate, SR);
   const startIdx = Math.round(item.start * SR);
   
-  // Normalize clip to -1.0 dBFS
+  // DSP Filters: +9.5 dB low shelf at 135Hz, +4.0 dB peak at 210Hz
+  const ls = makeLowShelf(SR, 135, 9.5);
+  const pk = makePeak(SR, 210, 4.0, 1.1);
+  const hs = makeLowShelf(SR, 5000, -2.5);
+
+  const dsp = new Float32Array(resampled.length);
   let peak = 0;
   for (let i = 0; i < resampled.length; i++) {
-    const a = Math.abs(resampled[i]);
-    if (a > peak) peak = a;
+    let v = resampled[i];
+    v = processBiquad(ls, v);
+    v = processBiquad(pk, v);
+    v = processBiquad(hs, v);
+    // Soft tape saturation: thickens and warms low-end
+    v = Math.tanh(v * 1.35);
+    dsp[i] = v;
+    if (Math.abs(v) > peak) peak = Math.abs(v);
   }
-  const gain = peak > 0 ? 0.92 / peak : 1;
-  const pan = item.id.includes('emre') ? -0.08 : 0.08;
+
+  // Normalize voice clip to -0.8 dBFS for punchy broadcast volume
+  const gain = peak > 0 ? 0.94 / peak : 1;
+  const pan = item.id.includes('emre') ? -0.05 : 0.05;
   const panL = 1 - Math.max(0, pan);
   const panR = 1 + Math.min(0, pan);
 
-  for (let i = 0; i < resampled.length; i++) {
+  for (let i = 0; i < dsp.length; i++) {
     const idx = startIdx + i;
     if (idx < totalSamples) {
-      const s = resampled[i] * gain;
+      const s = dsp[i] * gain;
       left[idx] += s * panL;
       right[idx] += s * panR;
     }
   }
 });
 
-// Sound effects: crisp typewriter/phone clicks during site typing (around 22.8s to 24.5s)
-for (let t = 22.8; t < 24.8; t += 0.085) {
+// Sound effects: crisp typewriter/phone clicks during site typing (around 16.8s to 18.2s)
+for (let t = 16.8; t < 18.2; t += 0.08) {
   const idx = Math.round(t * SR);
-  for (let j = 0; j < 400; j++) {
-    const env = (1 - j / 400) * 0.08;
+  for (let j = 0; j < 350; j++) {
+    const env = (1 - j / 350) * 0.09;
     const sample = (Math.random() * 2 - 1) * env;
     if (idx + j < totalSamples) {
       left[idx + j] += sample;
@@ -97,18 +146,18 @@ for (let t = 22.8; t < 24.8; t += 0.085) {
   }
 }
 
-// Ding at 25.0s (clean sine harmonic chime)
-const dingIdx = Math.round(25.0 * SR);
-for (let j = 0; j < SR * 0.8; j++) {
-  const env = Math.exp(-j / (SR * 0.18)) * 0.15;
-  const s = (Math.sin(j * 2 * Math.PI * 1318.5 / SR) + 0.5 * Math.sin(j * 2 * Math.PI * 1975.5 / SR)) * env;
+// Ding at 18.5s (clean harmonic chime)
+const dingIdx = Math.round(18.5 * SR);
+for (let j = 0; j < SR * 0.7; j++) {
+  const env = Math.exp(-j / (SR * 0.16)) * 0.16;
+  const s = (Math.sin(j * 2 * Math.PI * 1318.5 / SR) + 0.45 * Math.sin(j * 2 * Math.PI * 1975.5 / SR)) * env;
   if (dingIdx + j < totalSamples) {
     left[dingIdx + j] += s;
     right[dingIdx + j] += s;
   }
 }
 
-// Master Limiter / Soft Clipper to avoid any distortion
+// Master Limiter to prevent clipping
 let maxPeak = 0;
 for (let i = 0; i < totalSamples; i++) {
   maxPeak = Math.max(maxPeak, Math.abs(left[i]), Math.abs(right[i]));
@@ -144,4 +193,4 @@ for (let i = 0; i < totalSamples; i++) {
 
 const outWav = path.join(VA, 'master-soundtrack.wav');
 fs.writeFileSync(outWav, wavBuf);
-console.log('Master WAV written successfully:', outWav, (wavBuf.length / 1024 / 1024).toFixed(2), 'MB');
+console.log('Deep voice master WAV written successfully:', outWav, (wavBuf.length / 1024 / 1024).toFixed(2), 'MB');

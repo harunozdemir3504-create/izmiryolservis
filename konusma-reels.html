@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>İzmir Yol Servis – Konuşmalı Reels Stüdyosu (Pro & Akıcı)</title>
+<title>İzmir Yol Servis – Konuşmalı Reels Stüdyosu (Tok Erkek Sesi & Akıcı)</title>
 <style>
   html, body { margin: 0; background: #07090e; color: #fff; font-family: 'Segoe UI', system-ui, sans-serif; }
   #wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 18px; }
@@ -19,7 +19,7 @@
 <div id="wrap">
   <canvas id="c" width="720" height="1280"></canvas>
   <div class="btns">
-    <button id="play">▶ Önizle (Sesli & Akıcı)</button>
+    <button id="play">▶ Önizle (Tok Erkek Sesi & Akıcı)</button>
     <button id="rec">⬇ MP4 Olarak Kaydet</button>
   </div>
   <div id="status">Hazır.</div>
@@ -44,7 +44,7 @@ function loadImages() {
 }
 
 // ======================================================================
-// 2) DIALOGUE SCRIPT & TIMINGS (Natural Turkish, Zero Pitch Shift)
+// 2) TIGHT DIALOGUE TIMINGS (Zero Lag, Zero Delay)
 // ======================================================================
 const SPEAKERS = {
   E: { name: 'EMRE', color: '#f59e0b', text: '#000' },
@@ -52,22 +52,22 @@ const SPEAKERS = {
 };
 
 const LINES = [
-  { id: 'd1_emre', sp: 'E', start: 0.8, dur: 3.12, end: 3.92,
+  { id: 'd1_emre', sp: 'E', start: 0.4, dur: 2.66, end: 3.06,
     cap: 'Of ya... Offff. 😮‍💨', hi: ['Offff.'] },
-  { id: 'd2_mert', sp: 'M', start: 4.4, dur: 3.85, end: 8.25,
-    cap: 'Ne oldu kanka? Niye öyle ofluyorsun?', hi: ['kanka?', 'ofluyorsun?'] },
-  { id: 'd3_emre', sp: 'E', start: 8.8, dur: 11.32, end: 20.12,
-    cap: 'Sorma kanka. İşler çok yoğun. Arabanın bakımı geldi ama sanayiye gidemiyorum. Sıra bekleyecek vaktim yok.',
+  { id: 'd2_mert', sp: 'M', start: 3.3, dur: 3.20, end: 6.50,
+    cap: 'Ne oldu kanka? Niye ofluyorsun?', hi: ['kanka?', 'ofluyorsun?'] },
+  { id: 'd3_emre', sp: 'E', start: 6.8, dur: 8.27, end: 15.07,
+    cap: 'Sorma kanka. İşler çok yoğun. Arabamın bakımı geldi ama sanayiye gidemiyorum. Çok sıra var, vaktim yok.',
     hi: ['yoğun.', 'bakımı', 'sanayiye', 'vaktim', 'yok.'] },
-  { id: 'd4_mert', sp: 'M', start: 20.8, dur: 12.97, end: 33.77,
+  { id: 'd4_mert', sp: 'M', start: 15.3, dur: 10.93, end: 26.23,
     cap: 'Bak oğlum! izmiryolservis.com.tr sitesine gir. Belgeli ustalar 15 dakikada kapında! Uygun fiyata kaliteli hizmet, yerinde tamir ve bakım yapıyorlar.',
     hi: ['izmiryolservis.com.tr', 'Belgeli', '15', 'dakikada', 'kapında!', 'Uygun', 'tamir'] },
-  { id: 'd5_emre', sp: 'E', start: 34.5, dur: 4.67, end: 39.17,
+  { id: 'd5_emre', sp: 'E', start: 26.5, dur: 3.97, end: 30.47,
     cap: 'Ciddi misin? Valla süper, hemen giriyorum! 👍', hi: ['süper,', 'hemen'] }
 ];
 
-const END_START = 39.2;
-const TOTAL = 44.0;
+const END_START = 30.8;
+const TOTAL = 35.0;
 
 // Layout words
 LINES.forEach(l => {
@@ -81,31 +81,31 @@ LINES.forEach(l => {
 });
 
 // ======================================================================
-// 3) SCENE SHOTS (Fast & Cinematic)
+// 3) SCENE SHOTS (Dynamic, Snappy, Fast Cuts)
 // ======================================================================
 const SHOTS = [
   { img: 's01', a: 0.0, b: 0.8, kb: [1.08, 1.02, .5, .45] },
-  { img: 's02', a: 0.8, b: 4.4, kb: [1.00, 1.12, .5, .38] },
-  { img: 's03', a: 4.4, b: 8.8, kb: [1.02, 1.14, .5, .40] },
-  { img: 's04', a: 8.8, b: 13.5, kb: [1.12, 1.03, .5, .42] },
-  { img: 's06', a: 13.5, b: 16.8, kb: [1.00, 1.15, .5, .50] }, // dashboard wrench light
-  { img: 's05', a: 16.8, b: 20.8, kb: [1.14, 1.04, .45, .50] }, // sanayi queue
-  { img: 's07', a: 20.8, b: 22.8, kb: [1.00, 1.10, .5, .40] }, // mert suggests
-  { phone: true, a: 22.8, b: 27.5 },                           // interactive phone
-  { img: 's08', a: 27.5, b: 30.8, kb: [1.12, 1.02, .5, .50] }, // mechanic arrives
-  { img: 's09', a: 30.8, b: 34.5, kb: [1.02, 1.12, .5, .48] }, // mechanic working
-  { img: 's10', a: 34.5, b: END_START, kb: [1.04, 1.14, .5, .42] }, // happy emre
+  { img: 's02', a: 0.8, b: 3.3, kb: [1.00, 1.12, .5, .38] },
+  { img: 's03', a: 3.3, b: 6.8, kb: [1.02, 1.14, .5, .40] },
+  { img: 's04', a: 6.8, b: 10.5, kb: [1.12, 1.03, .5, .42] },
+  { img: 's06', a: 10.5, b: 12.8, kb: [1.00, 1.15, .5, .50] }, // dashboard wrench light
+  { img: 's05', a: 12.8, b: 15.3, kb: [1.14, 1.04, .45, .50] }, // sanayi queue
+  { img: 's07', a: 15.3, b: 16.8, kb: [1.00, 1.10, .5, .40] }, // mert suggests
+  { phone: true, a: 16.8, b: 20.8 },                           // interactive phone
+  { img: 's08', a: 20.8, b: 23.5, kb: [1.12, 1.02, .5, .50] }, // mechanic arrives
+  { img: 's09', a: 23.5, b: 26.5, kb: [1.02, 1.12, .5, .48] }, // mechanic working
+  { img: 's10', a: 26.5, b: END_START, kb: [1.04, 1.14, .5, .42] }, // happy emre
   { end: true, a: END_START, b: TOTAL + 1 }
 ];
 
 const BADGES = [
-  { a: 25.5, b: 28.5, y: 320, icon: '⏱️', text: '15 Dakikada Kapında', col: C.orange },
-  { a: 28.5, b: 31.5, y: 320, icon: '🛡️', text: 'Belgeli Uzman Usta', col: C.green },
-  { a: 31.5, b: 34.5, y: 320, icon: '💸', text: 'Uygun Fiyat & Kalite', col: C.amber }
+  { a: 19.2, b: 21.8, y: 320, icon: '⏱️', text: '15 Dakikada Kapında', col: C.orange },
+  { a: 21.8, b: 24.2, y: 320, icon: '🛡️', text: 'Belgeli Uzman Usta', col: C.green },
+  { a: 24.2, b: 26.5, y: 320, icon: '💸', text: 'Uygun Fiyat & Kalite', col: C.amber }
 ];
 
 // ======================================================================
-// 4) ULTRA-FAST DRAW HELPERS (No CPU Blur, No Heavy Lag)
+// 4) ULTRA-FAST DRAW HELPERS (No CPU Blur, No Lag)
 // ======================================================================
 const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
 const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
@@ -164,10 +164,10 @@ function textShadowed(str, x, y, size, color = '#fff', weight = 900, align = 'ce
 // 5) CAPTIONS & SUBTITLES
 // ======================================================================
 function drawCaption(time) {
-  const l = LINES.find(x => time >= x.start && time <= x.end + 0.35);
+  const l = LINES.find(x => time >= x.start && time <= x.end + 0.3);
   if (!l) return;
-  const inP = easeOut(clamp((time - l.start) / 0.15));
-  const outP = clamp((time - l.end) / 0.35);
+  const inP = easeOut(clamp((time - l.start) / 0.12));
+  const outP = clamp((time - l.end) / 0.3);
   const alpha = inP * (1 - outP);
 
   ctx.save();
@@ -186,7 +186,7 @@ function drawCaption(time) {
   ctx.textBaseline = 'middle';
   ctx.fillText(sp.name, W / 2, tagY + 1);
 
-  // Subtitle words (2-3 lines clean wrap)
+  // Subtitle words
   const fontSize = l.cap.length > 50 ? 40 : 46;
   ctx.font = `900 ${fontSize}px ${FONT}`;
   const maxW = 620, spaceW = ctx.measureText(' ').width;
@@ -220,18 +220,17 @@ function drawCaption(time) {
 }
 
 // ======================================================================
-// 6) INTERACTIVE PHONE MOCKUP (Lightweight, No Blur, Zero Lag)
+// 6) INTERACTIVE PHONE MOCKUP (Snappy & Fast)
 // ======================================================================
 const URL_TXT = 'izmiryolservis.com.tr';
 function drawPhone(time, alpha) {
-  // Dark backdrop
   drawCover(IMG.s07, 1.05, .5, .4, alpha);
   ctx.fillStyle = 'rgba(11,15,25,0.78)';
   ctx.fillRect(0, 0, W, H);
 
   ctx.save();
   ctx.globalAlpha = alpha;
-  const pIn = easeOut(clamp((time - 22.8) / 0.45));
+  const pIn = easeOut(clamp((time - 16.8) / 0.35));
   const PW = 440, PH = 880;
   const px = W / 2 - PW / 2, py = 160 + (1 - pIn) * 180;
 
@@ -256,7 +255,7 @@ function drawPhone(time, alpha) {
   rr(px + 16, by, PW - 32, 52, 26);
   ctx.fill();
 
-  const typeP = clamp((time - 23.0) / 1.6);
+  const typeP = clamp((time - 17.0) / 1.4);
   const numChars = Math.floor(typeP * URL_TXT.length);
   const typed = URL_TXT.slice(0, numChars);
   ctx.font = `600 22px ${FONT}`;
@@ -265,16 +264,14 @@ function drawPhone(time, alpha) {
   ctx.fillText('🔒 ' + (typed || 'izmiryolservis...'), px + 36, by + 28);
 
   // Website Content
-  if (time > 24.8) {
+  if (time > 18.5) {
     const cy = by + 68;
-    // Red Emergency Top Bar
     ctx.fillStyle = '#dc2626';
     ctx.fillRect(px, cy, PW, 34);
     ctx.fillStyle = '#fff';
     ctx.font = `800 14px ${FONT}`;
     ctx.fillText('● 7/24 İZMİR YOL YARDIM & MOBİL SERVİS', px + 18, cy + 18);
 
-    // Header
     ctx.fillStyle = '#0f172a';
     ctx.fillRect(px, cy + 34, PW, 64);
     ctx.fillStyle = C.orange;
@@ -292,12 +289,10 @@ function drawPhone(time, alpha) {
     ctx.font = `700 13px ${FONT}`;
     ctx.fillText('7/24 Mobil Araç Bakım & Çekici', px + 68, cy + 80);
 
-    // Hero Section
     const hy = cy + 98;
     ctx.fillStyle = '#1e293b';
     ctx.fillRect(px, hy, PW, 320);
 
-    // Hero image
     if (IMG.usta) {
       ctx.drawImage(IMG.usta, px, hy, PW, 170);
       const hg = ctx.createLinearGradient(0, hy + 60, 0, hy + 170);
@@ -313,7 +308,6 @@ function drawPhone(time, alpha) {
     ctx.fillStyle = C.amber;
     ctx.fillText('Mobil Oto Servis', px + 20, hy + 230);
 
-    // Buttons
     const by2 = hy + 250;
     ctx.fillStyle = '#ea580c';
     rr(px + 20, by2, 190, 50, 14);
@@ -340,7 +334,7 @@ function drawPhone(time, alpha) {
 function drawBadges(time) {
   BADGES.forEach(bg => {
     if (time >= bg.a && time <= bg.b) {
-      const p = easeOut(clamp((time - bg.a) / 0.3));
+      const p = easeOut(clamp((time - bg.a) / 0.25));
       const out = clamp((time - (bg.b - 0.2)) / 0.2);
       ctx.save();
       ctx.globalAlpha = p * (1 - out);
@@ -400,7 +394,7 @@ function drawEnd(time) {
   ctx.fillRect(0, 0, W, H);
 
   // Logo
-  const s = easeOut(clamp(p / 0.4));
+  const s = easeOut(clamp(p / 0.35));
   ctx.save();
   ctx.translate(W / 2, 340);
   ctx.scale(s, s);
@@ -460,7 +454,7 @@ function drawEnd(time) {
 }
 
 // ======================================================================
-// 9) FRAME RENDER (Takes ~1.5ms per frame)
+// 9) FRAME RENDER (Blazing fast ~1.5ms)
 // ======================================================================
 function render(time) {
   ctx.fillStyle = '#000';
@@ -500,7 +494,7 @@ async function start(record) {
   running = true;
   await loadImages();
 
-  // Load clean master soundtrack WAV
+  // Load deep male soundtrack WAV
   const ac = new (window.AudioContext || window.webkitAudioContext)();
   const rawWav = atob(ASSETS.soundtrack);
   const ab = new ArrayBuffer(rawWav.length);
@@ -536,7 +530,7 @@ async function start(record) {
       render(tt);
       if (performance.now() - frameStart > 33) slowFrames++;
 
-      document.getElementById('status').textContent = `${tt.toFixed(1)} / ${TOTAL.toFixed(1)} sn (Akıcı 30 FPS)`;
+      document.getElementById('status').textContent = `${tt.toFixed(1)} / ${TOTAL.toFixed(1)} sn (Tok Ses & Akıcı)`;
 
       if (tt >= TOTAL) {
         running = false;
