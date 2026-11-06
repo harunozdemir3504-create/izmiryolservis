@@ -2,23 +2,24 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>İzmir Yol Servis – Konuşmalı Reels Stüdyosu</title>
+<title>İzmir Yol Servis – Konuşmalı Reels Stüdyosu (Pro & Akıcı)</title>
 <style>
-  html, body { margin: 0; background: #05070d; color: #fff; font-family: 'Segoe UI', sans-serif; }
+  html, body { margin: 0; background: #07090e; color: #fff; font-family: 'Segoe UI', system-ui, sans-serif; }
   #wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 18px; }
-  canvas { height: 86vh; aspect-ratio: 9 / 16; border-radius: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.6); background: #000; }
-  .btns { display: flex; gap: 10px; }
-  button { font: 700 15px 'Segoe UI'; padding: 12px 20px; border-radius: 12px; border: 0; cursor: pointer; }
+  canvas { height: 86vh; aspect-ratio: 9 / 16; border-radius: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.8); background: #000; }
+  .btns { display: flex; gap: 12px; }
+  button { font: 700 15px 'Segoe UI'; padding: 12px 24px; border-radius: 12px; border: 0; cursor: pointer; transition: transform .15s; }
+  button:hover { transform: scale(1.03); }
   #play { background: linear-gradient(90deg,#f97316,#f59e0b); color: #000; }
   #rec { background: #10b981; color: #fff; }
-  #status { font-size: 13px; color: #94a3b8; }
+  #status { font-size: 14px; color: #94a3b8; font-weight: 600; }
 </style>
 </head>
 <body>
 <div id="wrap">
-  <canvas id="c" width="1080" height="1920"></canvas>
+  <canvas id="c" width="720" height="1280"></canvas>
   <div class="btns">
-    <button id="play">▶ Önizle (Sesli)</button>
+    <button id="play">▶ Önizle (Sesli & Akıcı)</button>
     <button id="rec">⬇ MP4 Olarak Kaydet</button>
   </div>
   <div id="status">Hazır.</div>
@@ -26,14 +27,14 @@
 <script src="video-assets/assets.js"></script>
 <script>
 'use strict';
-const W = 1080, H = 1920;
+const W = 720, H = 1280;
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
-const FONT = "'Segoe UI', 'Segoe UI Emoji', sans-serif";
+const FONT = "'Segoe UI', 'Segoe UI Emoji', system-ui, sans-serif";
 const C = { orange: '#f97316', amber: '#f59e0b', red: '#ef4444', green: '#10b981', dark: '#0b0f19' };
 
 // ======================================================================
-// 1) ASSET LOADING
+// 1) LOAD IMAGES
 // ======================================================================
 const IMG = {};
 function loadImages() {
@@ -43,110 +44,85 @@ function loadImages() {
 }
 
 // ======================================================================
-// 2) SCRIPT / DIALOGUE  (spoken voice id -> on-screen caption)
+// 2) DIALOGUE SCRIPT & TIMINGS (Natural Turkish, Zero Pitch Shift)
 // ======================================================================
 const SPEAKERS = {
-  E: { name: 'EMRE', color: '#f59e0b', text: '#111' },
-  M: { name: 'MERT', color: '#10b981', text: '#fff' }
+  E: { name: 'EMRE', color: '#f59e0b', text: '#000' },
+  M: { name: 'MERT', color: '#10b981', text: '#000' }
 };
-// gap = pause BEFORE this phrase (seconds)
-const DIALOGUE = [
-  { id: 'e1', sp: 'E', gap: 0.95, cap: 'Offff... of ya. 😮‍💨', hi: ['Offff...'] },
-  { id: 'm1', sp: 'M', gap: 0.30, cap: 'Ne oldu kanka?', hi: ['kanka?'] },
-  { id: 'm2', sp: 'M', gap: 0.12, cap: 'Niye öyle ofluyorsun?', hi: [] },
-  { id: 'e3', sp: 'E', gap: 0.30, cap: 'Sorma kanka.', hi: [] },
-  { id: 'e4', sp: 'E', gap: 0.10, cap: 'İşler çok yoğun.', hi: ['yoğun.'] },
-  { id: 'e5', sp: 'E', gap: 0.14, cap: 'Arabamın bakımı geldi ama gidemiyorum.', hi: ['bakımı', 'gidemiyorum.'] },
-  { id: 'e6', sp: 'E', gap: 0.14, cap: 'Hem çok sıra var zaten, vaktim yok.', hi: ['sıra', 'vaktim', 'yok.'] },
-  { id: 'm3', sp: 'M', gap: 0.32, cap: 'Bak oğlum! 👇', hi: ['oğlum!'] },
-  { id: 'm4', sp: 'M', gap: 0.08, cap: 'izmiryolservis.com.tr sitesine gir.', hi: ['izmiryolservis.com.tr'] },
-  { id: 'm5', sp: 'M', gap: 0.14, cap: 'Oradan belgeli ustalar, 15 dakikada kapında!', hi: ['belgeli', '15', 'dakikada', 'kapında!'] },
-  { id: 'm6', sp: 'M', gap: 0.12, cap: 'Uygun fiyata, kaliteli hizmet.', hi: ['Uygun', 'kaliteli'] },
-  { id: 'm7', sp: 'M', gap: 0.10, cap: 'Tamir de yapıyorlar! 🔧', hi: ['Tamir'] },
-  { id: 'e7', sp: 'E', gap: 0.30, cap: 'Ciddi misin? 😳', hi: [] },
-  { id: 'e8', sp: 'E', gap: 0.10, cap: 'Valla süper, hemen giriyorum!', hi: ['süper,', 'hemen'] }
-];
-let t = 0;
-const LINES = DIALOGUE.map(d => {
-  const v = ASSETS.voice[d.id];
-  t += d.gap;
-  const line = Object.assign({}, d, { start: t, dur: v.dur, end: t + v.dur, segs: v.segs });
-  t += v.dur;
-  return line;
-});
-const L = Object.fromEntries(LINES.map(l => [l.id, l]));
-const END_START = L.e8.end + 0.45;
-const END_DUR = 5.2;
-const TOTAL = END_START + END_DUR;
 
-// word timing: distribute caption words over the voiced segments by character weight
+const LINES = [
+  { id: 'd1_emre', sp: 'E', start: 0.8, dur: 3.12, end: 3.92,
+    cap: 'Of ya... Offff. 😮‍💨', hi: ['Offff.'] },
+  { id: 'd2_mert', sp: 'M', start: 4.4, dur: 3.85, end: 8.25,
+    cap: 'Ne oldu kanka? Niye öyle ofluyorsun?', hi: ['kanka?', 'ofluyorsun?'] },
+  { id: 'd3_emre', sp: 'E', start: 8.8, dur: 11.32, end: 20.12,
+    cap: 'Sorma kanka. İşler çok yoğun. Arabanın bakımı geldi ama sanayiye gidemiyorum. Sıra bekleyecek vaktim yok.',
+    hi: ['yoğun.', 'bakımı', 'sanayiye', 'vaktim', 'yok.'] },
+  { id: 'd4_mert', sp: 'M', start: 20.8, dur: 12.97, end: 33.77,
+    cap: 'Bak oğlum! izmiryolservis.com.tr sitesine gir. Belgeli ustalar 15 dakikada kapında! Uygun fiyata kaliteli hizmet, yerinde tamir ve bakım yapıyorlar.',
+    hi: ['izmiryolservis.com.tr', 'Belgeli', '15', 'dakikada', 'kapında!', 'Uygun', 'tamir'] },
+  { id: 'd5_emre', sp: 'E', start: 34.5, dur: 4.67, end: 39.17,
+    cap: 'Ciddi misin? Valla süper, hemen giriyorum! 👍', hi: ['süper,', 'hemen'] }
+];
+
+const END_START = 39.2;
+const TOTAL = 44.0;
+
+// Layout words
 LINES.forEach(l => {
   const words = l.cap.split(' ');
-  const voiced = l.segs.reduce((a, s) => a + (s[1] - s[0]), 0);
-  const weights = words.map(w => Math.max(1, w.replace(/[^\p{L}\p{N}]/gu, '').length + 1));
-  const sum = weights.reduce((a, b) => a + b, 0);
-  let acc = 0;
-  const vt = x => { // voiced-time -> real time inside clip
-    for (const s of l.segs) { const d = s[1] - s[0]; if (x <= d) return s[0] + x; x -= d; }
-    return l.segs.length ? l.segs[l.segs.length - 1][1] : l.dur;
-  };
-  l.words = words.map((w, i) => {
-    const a = vt(acc / sum * voiced); acc += weights[i];
-    return { w, t: l.start + a, hi: l.hi.includes(w) };
-  });
+  const durPerWord = l.dur / words.length;
+  l.words = words.map((w, i) => ({
+    w,
+    t: l.start + i * durPerWord,
+    hi: l.hi.some(h => w.includes(h))
+  }));
 });
 
 // ======================================================================
-// 3) SHOT LIST (visual edit)
+// 3) SCENE SHOTS (Fast & Cinematic)
 // ======================================================================
-// kb: [scaleFrom, scaleTo, fxFrom, fyFrom, fxTo, fyTo] (focal point 0..1)
 const SHOTS = [
-  { img: 's01', a: 0, b: L.e1.start - 0.05, kb: [1.12, 1.02, .5, .45, .5, .5] },
-  { img: 's02', a: L.e1.start - 0.05, b: L.m1.start - 0.08, kb: [1.0, 1.14, .5, .4, .5, .36] },
-  { img: 's03', a: L.m1.start - 0.08, b: L.e3.start - 0.08, kb: [1.05, 1.15, .5, .42, .52, .38] },
-  { img: 's04', a: L.e3.start - 0.08, b: L.e5.start - 0.05, kb: [1.14, 1.04, .5, .4, .5, .42] },
-  { img: 's06', a: L.e5.start - 0.05, b: L.e6.start - 0.05, kb: [1.0, 1.18, .5, .5, .55, .5] },
-  { img: 's05', a: L.e6.start - 0.05, b: L.m3.start - 0.08, kb: [1.18, 1.03, .4, .5, .6, .5] },
-  { img: 's07', a: L.m3.start - 0.08, b: L.m4.start - 0.02, kb: [1.0, 1.1, .5, .4, .5, .4], punch: true },
-  { phone: true, a: L.m4.start - 0.02, b: L.m5.start - 0.05 },
-  { img: 's08', a: L.m5.start - 0.05, b: L.m6.start - 0.05, kb: [1.15, 1.03, .5, .5, .5, .5] },
-  { img: 's09', a: L.m6.start - 0.05, b: L.m7.start - 0.05, kb: [1.02, 1.14, .5, .5, .45, .45] },
-  { img: 'kapida', a: L.m7.start - 0.05, b: L.e7.start - 0.08, kb: [1.0, 1.12, .5, .5, .55, .5] },
-  { img: 's10', a: L.e7.start - 0.08, b: END_START, kb: [1.04, 1.16, .5, .42, .5, .4], punch: true },
+  { img: 's01', a: 0.0, b: 0.8, kb: [1.08, 1.02, .5, .45] },
+  { img: 's02', a: 0.8, b: 4.4, kb: [1.00, 1.12, .5, .38] },
+  { img: 's03', a: 4.4, b: 8.8, kb: [1.02, 1.14, .5, .40] },
+  { img: 's04', a: 8.8, b: 13.5, kb: [1.12, 1.03, .5, .42] },
+  { img: 's06', a: 13.5, b: 16.8, kb: [1.00, 1.15, .5, .50] }, // dashboard wrench light
+  { img: 's05', a: 16.8, b: 20.8, kb: [1.14, 1.04, .45, .50] }, // sanayi queue
+  { img: 's07', a: 20.8, b: 22.8, kb: [1.00, 1.10, .5, .40] }, // mert suggests
+  { phone: true, a: 22.8, b: 27.5 },                           // interactive phone
+  { img: 's08', a: 27.5, b: 30.8, kb: [1.12, 1.02, .5, .50] }, // mechanic arrives
+  { img: 's09', a: 30.8, b: 34.5, kb: [1.02, 1.12, .5, .48] }, // mechanic working
+  { img: 's10', a: 34.5, b: END_START, kb: [1.04, 1.14, .5, .42] }, // happy emre
   { end: true, a: END_START, b: TOTAL + 1 }
 ];
-const XF = 0.2; // crossfade length
 
-// Overlay badges (appear with spring)
 const BADGES = [
-  { a: L.m5.words[1].t, b: L.m6.start - 0.05, y: 420, icon: '✅', text: 'Belgeli Ustalar', col: C.green },
-  { a: L.m5.words[3].t, b: L.m6.start - 0.05, y: 545, icon: '⏱️', text: '15 Dakikada Kapında', col: C.orange },
-  { a: L.m6.words[0].t, b: L.m7.start - 0.05, y: 420, icon: '💸', text: 'Uygun Fiyat', col: C.green },
-  { a: L.m6.words[2].t, b: L.m7.start - 0.05, y: 545, icon: '⭐', text: 'Kaliteli Hizmet', col: C.amber },
-  { a: L.m7.start + 0.05, b: L.e7.start - 0.08, y: 420, icon: '🔧', text: 'Bakım + Tamir Yerinde', col: C.orange }
+  { a: 25.5, b: 28.5, y: 320, icon: '⏱️', text: '15 Dakikada Kapında', col: C.orange },
+  { a: 28.5, b: 31.5, y: 320, icon: '🛡️', text: 'Belgeli Uzman Usta', col: C.green },
+  { a: 31.5, b: 34.5, y: 320, icon: '💸', text: 'Uygun Fiyat & Kalite', col: C.amber }
 ];
 
 // ======================================================================
-// 4) DRAW HELPERS
+// 4) ULTRA-FAST DRAW HELPERS (No CPU Blur, No Heavy Lag)
 // ======================================================================
 const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
 const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 const easeOut = x => 1 - Math.pow(1 - x, 3);
-const spring = x => x <= 0 ? 0 : x >= 1 ? 1 : 1 - Math.cos(x * Math.PI * 2.4) * Math.exp(-x * 6.5);
 const lerp = (a, b, x) => a + (b - a) * x;
 
 function rr(x, y, w, h, r) { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); }
 
-function drawCover(im, scale, fx, fy, alpha = 1, blur = 0) {
+function drawCover(im, scale, fx, fy, alpha = 1) {
+  if (!im) return;
   const ir = im.width / im.height, cr = W / H;
   let dw, dh;
   if (ir > cr) { dh = H * scale; dw = dh * ir; } else { dw = W * scale; dh = dw / ir; }
-  const x = clamp(W / 2 - fx * dw + (fx - .5) * 0 , W - dw, 0) ;
   const cx = W / 2 - (fx - 0.5) * (dw - W) - dw / 2;
   const cy = H / 2 - (fy - 0.5) * (dh - H) - dh / 2;
   ctx.save();
   ctx.globalAlpha = alpha;
-  if (blur) ctx.filter = `blur(${blur}px) brightness(0.55)`;
   ctx.drawImage(im, clamp(cx, W - dw, 0), clamp(cy, H - dh, 0), dw, dh);
   ctx.restore();
 }
@@ -154,573 +130,425 @@ function drawCover(im, scale, fx, fy, alpha = 1, blur = 0) {
 function drawShotImage(s, time, alpha) {
   const p = clamp((time - s.a) / (s.b - s.a));
   const e = ease(p);
-  const k = s.kb;
-  let sc = lerp(k[0], k[1], e);
-  if (s.punch) sc *= 1 + 0.06 * Math.exp(-((time - s.a) * 9));
-  drawCover(IMG[s.img], sc, lerp(k[2], k[4], e), lerp(k[3], k[5], e), alpha);
+  const sc = lerp(s.kb[0], s.kb[1], e);
+  drawCover(IMG[s.img], sc, s.kb[2], s.kb[3], alpha);
 }
 
-// pre-rendered layers: vignette + film grain
-const vignette = document.createElement('canvas'); vignette.width = W; vignette.height = H;
+// Pre-render vignette gradient once
+const vignette = document.createElement('canvas');
+vignette.width = W; vignette.height = H;
 (() => {
   const g = vignette.getContext('2d');
-  const grd = g.createRadialGradient(W / 2, H * 0.45, H * 0.22, W / 2, H * 0.5, H * 0.75);
-  grd.addColorStop(0, 'rgba(0,0,0,0)'); grd.addColorStop(1, 'rgba(0,0,0,0.62)');
-  g.fillStyle = grd; g.fillRect(0, 0, W, H);
-  const bot = g.createLinearGradient(0, H * 0.55, 0, H);
-  bot.addColorStop(0, 'rgba(0,0,0,0)'); bot.addColorStop(1, 'rgba(0,0,0,0.78)');
-  g.fillStyle = bot; g.fillRect(0, H * 0.55, W, H * 0.45);
-  const top = g.createLinearGradient(0, 0, 0, 420);
-  top.addColorStop(0, 'rgba(0,0,0,0.55)'); top.addColorStop(1, 'rgba(0,0,0,0)');
-  g.fillStyle = top; g.fillRect(0, 0, W, 420);
+  const bot = g.createLinearGradient(0, H * 0.52, 0, H);
+  bot.addColorStop(0, 'rgba(0,0,0,0)');
+  bot.addColorStop(1, 'rgba(0,0,0,0.85)');
+  g.fillStyle = bot; g.fillRect(0, H * 0.52, W, H * 0.48);
+  const top = g.createLinearGradient(0, 0, 0, 260);
+  top.addColorStop(0, 'rgba(0,0,0,0.65)');
+  top.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = top; g.fillRect(0, 0, W, 260);
 })();
-const grains = [0, 1, 2, 3].map(() => {
-  const c = document.createElement('canvas'); c.width = 360; c.height = 640;
-  const g = c.getContext('2d'); const d = g.createImageData(360, 640);
-  for (let i = 0; i < d.data.length; i += 4) { const v = Math.random() * 255; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255; }
-  g.putImageData(d, 0, 0); return c;
-});
 
-function grade() {
-  ctx.save();
-  ctx.fillStyle = 'rgba(255,150,60,0.05)'; ctx.fillRect(0, 0, W, H); // warm cinematic tint
-  ctx.drawImage(vignette, 0, 0);
-  ctx.globalAlpha = 0.045; ctx.imageSmoothingEnabled = false;
-  ctx.drawImage(grains[(frameNo >> 1) % 4], 0, 0, W, H);
-  ctx.restore();
-}
-
-function textShadowed(str, x, y, size, color = '#fff', weight = 900, align = 'center', stroke = 10) {
+function textShadowed(str, x, y, size, color = '#fff', weight = 900, align = 'center') {
   ctx.font = `${weight} ${size}px ${FONT}`;
   ctx.textAlign = align; ctx.textBaseline = 'middle';
   ctx.lineJoin = 'round';
-  ctx.lineWidth = stroke; ctx.strokeStyle = 'rgba(0,0,0,0.85)';
+  ctx.lineWidth = Math.round(size * 0.16);
+  ctx.strokeStyle = '#000';
   ctx.strokeText(str, x, y);
-  ctx.fillStyle = color; ctx.fillText(str, x, y);
+  ctx.fillStyle = color;
+  ctx.fillText(str, x, y);
 }
 
 // ======================================================================
-// 5) CAPTIONS (karaoke word highlight) + SPEAKER TAG with live voice meter
+// 5) CAPTIONS & SUBTITLES
 // ======================================================================
-const capLayoutCache = {};
-function layoutCaption(l) {
-  if (capLayoutCache[l.id]) return capLayoutCache[l.id];
-  const size = l.cap.length > 30 ? 68 : 78;
-  ctx.font = `900 ${size}px ${FONT}`;
-  const maxW = 900, space = ctx.measureText(' ').width;
-  const rows = [[]]; let rowW = 0;
-  l.words.forEach((wd, i) => {
-    const w = ctx.measureText(wd.w).width;
-    if (rowW + w > maxW && rows[rows.length - 1].length) { rows.push([]); rowW = 0; }
-    rows[rows.length - 1].push({ i, w }); rowW += w + space;
-  });
-  return (capLayoutCache[l.id] = { size, space, rows });
-}
-
-let voiceLevel = 0;
 function drawCaption(time) {
-  const l = LINES.find(x => time >= x.start - 0.06 && time <= x.end + 0.28);
+  const l = LINES.find(x => time >= x.start && time <= x.end + 0.35);
   if (!l) return;
-  const inP = easeOut(clamp((time - l.start + 0.06) / 0.18));
-  const outP = clamp((time - l.end) / 0.28);
+  const inP = easeOut(clamp((time - l.start) / 0.15));
+  const outP = clamp((time - l.end) / 0.35);
   const alpha = inP * (1 - outP);
-  const { size, space, rows } = layoutCaption(l);
-  const lineH = size * 1.18;
-  const baseY = 1330 - (rows.length - 1) * lineH / 2 + (1 - inP) * 30;
-  const sp = SPEAKERS[l.sp];
 
   ctx.save();
   ctx.globalAlpha = alpha;
-  // speaker tag pill
-  const tagY = baseY - lineH / 2 - 78;
-  ctx.font = `900 40px ${FONT}`;
-  const nameW = ctx.measureText(sp.name).width;
-  const pillW = nameW + 150, pillX = W / 2 - pillW / 2;
-  ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 20;
-  ctx.fillStyle = sp.color; rr(pillX, tagY - 34, pillW, 68, 34); ctx.fill();
-  ctx.shadowBlur = 0;
-  ctx.fillStyle = sp.text; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-  ctx.fillText(sp.name, pillX + 34, tagY + 2);
-  // live equalizer bars (driven by real voice amplitude)
-  const speaking = time >= l.start && time <= l.end;
-  for (let b = 0; b < 4; b++) {
-    const lv = speaking ? clamp(voiceLevel * (0.6 + 0.4 * Math.sin(time * 23 + b * 1.7)) * 1.6 + 0.12) : 0.12;
-    const bh = 10 + lv * 34;
-    ctx.fillStyle = sp.text; rr(pillX + 34 + nameW + 22 + b * 18, tagY - bh / 2, 10, bh, 5); ctx.fill();
-  }
 
-  // words
-  ctx.font = `900 ${size}px ${FONT}`;
-  ctx.textBaseline = 'middle'; ctx.textAlign = 'left'; ctx.lineJoin = 'round';
+  // Speaker Tag
+  const sp = SPEAKERS[l.sp];
+  const tagY = 880;
+  ctx.font = `900 26px ${FONT}`;
+  const tw = ctx.measureText(sp.name).width;
+  ctx.fillStyle = sp.color;
+  rr(W / 2 - (tw + 48) / 2, tagY - 22, tw + 48, 44, 22);
+  ctx.fill();
+  ctx.fillStyle = sp.text;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(sp.name, W / 2, tagY + 1);
+
+  // Subtitle words (2-3 lines clean wrap)
+  const fontSize = l.cap.length > 50 ? 40 : 46;
+  ctx.font = `900 ${fontSize}px ${FONT}`;
+  const maxW = 620, spaceW = ctx.measureText(' ').width;
+  const rows = [[]]; let curW = 0;
+  l.words.forEach((wd, i) => {
+    const w = ctx.measureText(wd.w).width;
+    if (curW + w > maxW && rows[rows.length - 1].length) { rows.push([]); curW = 0; }
+    rows[rows.length - 1].push({ i, w });
+    curW += w + spaceW;
+  });
+
+  const lineH = fontSize * 1.25;
+  const startY = 960;
   rows.forEach((row, ri) => {
-    const rowW = row.reduce((a, r) => a + r.w, 0) + space * (row.length - 1);
+    const rowW = row.reduce((a, b) => a + b.w, 0) + (row.length - 1) * spaceW;
     let x = W / 2 - rowW / 2;
-    const y = baseY + ri * lineH;
-    row.forEach(r => {
-      const wd = l.words[r.i];
+    const y = startY + ri * lineH;
+    row.forEach(item => {
+      const wd = l.words[item.i];
       const active = time >= wd.t;
-      const justNow = clamp((time - wd.t) / 0.16);
-      const pop = active ? 1 + 0.12 * Math.sin(justNow * Math.PI) : 1;
-      ctx.save();
-      ctx.translate(x + r.w / 2, y); ctx.scale(pop, pop);
-      ctx.lineWidth = 14; ctx.strokeStyle = 'rgba(0,0,0,0.9)';
-      ctx.strokeText(wd.w, -r.w / 2, 0);
-      ctx.fillStyle = !active ? 'rgba(255,255,255,0.55)' : (wd.hi ? (l.sp === 'E' ? '#fbbf24' : '#34d399') : '#ffffff');
-      ctx.fillText(wd.w, -r.w / 2, 0);
-      ctx.restore();
-      x += r.w + space;
+      ctx.lineWidth = 10;
+      ctx.strokeStyle = '#000';
+      ctx.strokeText(wd.w, x + item.w / 2, y);
+      ctx.fillStyle = active ? (wd.hi ? (l.sp === 'E' ? '#fbbf24' : '#34d399') : '#ffffff') : 'rgba(255,255,255,0.6)';
+      ctx.fillText(wd.w, x + item.w / 2, y);
+      x += item.w + spaceW;
     });
   });
+
   ctx.restore();
 }
 
 // ======================================================================
-// 6) SPECIAL SCENES
+// 6) INTERACTIVE PHONE MOCKUP (Lightweight, No Blur, Zero Lag)
 // ======================================================================
+const URL_TXT = 'izmiryolservis.com.tr';
+function drawPhone(time, alpha) {
+  // Dark backdrop
+  drawCover(IMG.s07, 1.05, .5, .4, alpha);
+  ctx.fillStyle = 'rgba(11,15,25,0.78)';
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  const pIn = easeOut(clamp((time - 22.8) / 0.45));
+  const PW = 440, PH = 880;
+  const px = W / 2 - PW / 2, py = 160 + (1 - pIn) * 180;
+
+  // Phone Frame
+  ctx.fillStyle = '#111827';
+  rr(px - 10, py - 10, PW + 20, PH + 20, 50);
+  ctx.fill();
+  ctx.strokeStyle = '#374151';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // Screen
+  ctx.save();
+  rr(px, py, PW, PH, 42);
+  ctx.clip();
+  ctx.fillStyle = '#0b0f19';
+  ctx.fillRect(px, py, PW, PH);
+
+  // Address Bar
+  const by = py + 48;
+  ctx.fillStyle = '#1f2937';
+  rr(px + 16, by, PW - 32, 52, 26);
+  ctx.fill();
+
+  const typeP = clamp((time - 23.0) / 1.6);
+  const numChars = Math.floor(typeP * URL_TXT.length);
+  const typed = URL_TXT.slice(0, numChars);
+  ctx.font = `600 22px ${FONT}`;
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#fff';
+  ctx.fillText('🔒 ' + (typed || 'izmiryolservis...'), px + 36, by + 28);
+
+  // Website Content
+  if (time > 24.8) {
+    const cy = by + 68;
+    // Red Emergency Top Bar
+    ctx.fillStyle = '#dc2626';
+    ctx.fillRect(px, cy, PW, 34);
+    ctx.fillStyle = '#fff';
+    ctx.font = `800 14px ${FONT}`;
+    ctx.fillText('● 7/24 İZMİR YOL YARDIM & MOBİL SERVİS', px + 18, cy + 18);
+
+    // Header
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(px, cy + 34, PW, 64);
+    ctx.fillStyle = C.orange;
+    rr(px + 16, cy + 46, 40, 40, 10);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.font = `24px ${FONT}`;
+    ctx.textAlign = 'center';
+    ctx.fillText('🔧', px + 36, cy + 68);
+
+    ctx.textAlign = 'left';
+    ctx.font = `900 20px ${FONT}`;
+    ctx.fillText('İzmir Yol Servis', px + 68, cy + 60);
+    ctx.fillStyle = C.amber;
+    ctx.font = `700 13px ${FONT}`;
+    ctx.fillText('7/24 Mobil Araç Bakım & Çekici', px + 68, cy + 80);
+
+    // Hero Section
+    const hy = cy + 98;
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(px, hy, PW, 320);
+
+    // Hero image
+    if (IMG.usta) {
+      ctx.drawImage(IMG.usta, px, hy, PW, 170);
+      const hg = ctx.createLinearGradient(0, hy + 60, 0, hy + 170);
+      hg.addColorStop(0, 'transparent');
+      hg.addColorStop(1, '#1e293b');
+      ctx.fillStyle = hg;
+      ctx.fillRect(px, hy + 60, PW, 110);
+    }
+
+    ctx.fillStyle = '#fff';
+    ctx.font = `900 24px ${FONT}`;
+    ctx.fillText('İzmir Yol Yardım &', px + 20, hy + 200);
+    ctx.fillStyle = C.amber;
+    ctx.fillText('Mobil Oto Servis', px + 20, hy + 230);
+
+    // Buttons
+    const by2 = hy + 250;
+    ctx.fillStyle = '#ea580c';
+    rr(px + 20, by2, 190, 50, 14);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.font = `800 16px ${FONT}`;
+    ctx.textAlign = 'center';
+    ctx.fillText('📞 Hemen Ara', px + 115, by2 + 26);
+
+    ctx.fillStyle = '#10b981';
+    rr(px + PW - 210, by2, 190, 50, 14);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.fillText('📍 Konum Gönder', px + PW - 115, by2 + 26);
+  }
+
+  ctx.restore(); // clip
+  ctx.restore();
+}
+
+// ======================================================================
+// 7) BADGES & WATERMARK
+// ======================================================================
+function drawBadges(time) {
+  BADGES.forEach(bg => {
+    if (time >= bg.a && time <= bg.b) {
+      const p = easeOut(clamp((time - bg.a) / 0.3));
+      const out = clamp((time - (bg.b - 0.2)) / 0.2);
+      ctx.save();
+      ctx.globalAlpha = p * (1 - out);
+      ctx.font = `900 34px ${FONT}`;
+      const tw = ctx.measureText(bg.text).width;
+      const bw = tw + 100, x = W / 2 - bw / 2;
+      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      rr(x, bg.y, bw, 68, 34);
+      ctx.fill();
+      ctx.fillStyle = bg.col;
+      ctx.beginPath();
+      ctx.arc(x + 36, bg.y + 34, 24, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.font = `28px ${FONT}`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(bg.icon, x + 36, bg.y + 36);
+      ctx.font = `900 30px ${FONT}`;
+      ctx.fillStyle = '#0b0f19';
+      ctx.textAlign = 'left';
+      ctx.fillText(bg.text, x + 72, bg.y + 36);
+      ctx.restore();
+    }
+  });
+}
+
 function drawWatermark(time) {
   if (time > END_START) return;
   ctx.save();
-  ctx.globalAlpha = 0.9 * clamp(time / 0.6);
-  ctx.font = `800 30px ${FONT}`;
+  ctx.font = `800 22px ${FONT}`;
   const txt = 'izmiryolservis.com.tr';
-  const w = ctx.measureText(txt).width + 92;
-  ctx.fillStyle = 'rgba(11,15,25,0.62)'; rr(W / 2 - w / 2, 168, w, 58, 29); ctx.fill();
-  ctx.strokeStyle = 'rgba(249,115,22,0.8)'; ctx.lineWidth = 2; ctx.stroke();
-  ctx.fillStyle = C.orange; ctx.beginPath(); ctx.arc(W / 2 - w / 2 + 34, 197, 9, 0, 7); ctx.fill();
-  ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-  ctx.fillText(txt, W / 2 - w / 2 + 56, 198);
+  const w = ctx.measureText(txt).width + 60;
+  ctx.fillStyle = 'rgba(11,15,25,0.7)';
+  rr(W / 2 - w / 2, 70, w, 44, 22);
+  ctx.fill();
+  ctx.strokeStyle = C.orange;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.fillStyle = C.orange;
+  ctx.beginPath();
+  ctx.arc(W / 2 - w / 2 + 22, 92, 6, 0, 7);
+  ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(txt, W / 2 - w / 2 + 38, 93);
   ctx.restore();
 }
 
-function drawHook(time) {
-  const a = 0.15, b = L.e1.start + 0.9;
-  if (time < a || time > b + 0.3) return;
-  const pin = spring(clamp((time - a) / 0.7));
-  const out = clamp((time - b) / 0.3);
-  ctx.save();
-  ctx.globalAlpha = 1 - out;
-  ctx.translate(W / 2, 420); ctx.scale(0.6 + 0.4 * pin, 0.6 + 0.4 * pin);
-  ctx.fillStyle = 'rgba(239,68,68,0.95)'; rr(-330, -150, 660, 84, 42); ctx.fill();
-  textShadowed('BAKIM ZAMANI GELDİ 🚗', 0, -106, 46, '#fff', 900, 'center', 0);
-  textShadowed('ama vaktin mi yok?', 0, 10, 92, '#fff', 900, 'center', 16);
-  ctx.restore();
-}
-
-function drawVaktimYok(time) {
-  const w = L.e6.words.find(x => x.w === 'vaktim');
-  if (!w || time < w.t - 0.05 || time > L.m3.start - 0.1) return;
-  const p = spring(clamp((time - w.t + 0.05) / 0.5));
-  ctx.save();
-  ctx.translate(W / 2, 560); ctx.rotate(-0.12); ctx.scale(2.2 - 1.2 * p, 2.2 - 1.2 * p);
-  ctx.globalAlpha = clamp(p * 1.5);
-  ctx.lineWidth = 12; ctx.strokeStyle = '#ef4444';
-  rr(-300, -80, 600, 160, 24); ctx.stroke();
-  textShadowed('⏰ VAKİT YOK!', 0, 4, 92, '#ef4444', 900, 'center', 0);
-  ctx.restore();
-}
-
-function drawBadges(time) {
-  BADGES.forEach(bg => {
-    if (time < bg.a || time > bg.b + 0.25) return;
-    const p = spring(clamp((time - bg.a) / 0.55));
-    const out = clamp((time - bg.b) / 0.25);
-    ctx.save();
-    ctx.globalAlpha = clamp(p * 2) * (1 - out);
-    ctx.font = `900 54px ${FONT}`;
-    const tw = ctx.measureText(bg.text).width;
-    const bw = tw + 170, x = lerp(-bw, W / 2 - bw / 2, p);
-    ctx.shadowColor = 'rgba(0,0,0,0.45)'; ctx.shadowBlur = 30; ctx.shadowOffsetY = 10;
-    ctx.fillStyle = 'rgba(255,255,255,0.96)'; rr(x, bg.y - 52, bw, 104, 52); ctx.fill();
-    ctx.shadowColor = 'transparent';
-    ctx.fillStyle = bg.col; ctx.beginPath(); ctx.arc(x + 60, bg.y, 38, 0, 7); ctx.fill();
-    ctx.font = `48px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(bg.icon, x + 60, bg.y + 3);
-    ctx.font = `900 54px ${FONT}`; ctx.fillStyle = '#0b0f19'; ctx.textAlign = 'left';
-    ctx.fillText(bg.text, x + 118, bg.y + 3);
-    ctx.restore();
-  });
-}
-
-// --- Phone mockup with the real site design + typing URL ---
-const URL_TXT = 'izmiryolservis.com.tr';
-function phoneTimes() {
-  const s = L.m4.start, d = L.m4.dur;
-  return { s, typeEnd: s + d * 0.55, load: s + d * 0.55, loaded: s + d * 0.55 + 0.45, tap: L.m4.end - 0.35 };
-}
-function drawPhone(time, alpha) {
-  const pt = phoneTimes();
-  // background: blurred Mert shot
-  drawCover(IMG.s07, 1.15, .5, .4, alpha, 22);
-  ctx.save();
-  ctx.globalAlpha = alpha;
-  const enter = spring(clamp((time - pt.s + 0.05) / 0.7));
-  const PW = 640, PH = 1280, px = W / 2 - PW / 2, py = 300 + (1 - enter) * 500;
-  ctx.translate(W / 2, py + PH / 2); ctx.rotate((1 - enter) * 0.12); ctx.translate(-W / 2, -(py + PH / 2));
-  // body
-  ctx.shadowColor = 'rgba(0,0,0,0.7)'; ctx.shadowBlur = 60; ctx.shadowOffsetY = 30;
-  ctx.fillStyle = '#111827'; rr(px - 18, py - 18, PW + 36, PH + 36, 86); ctx.fill();
-  ctx.shadowColor = 'transparent';
-  ctx.strokeStyle = '#374151'; ctx.lineWidth = 4; ctx.stroke();
-  // screen clip
-  ctx.save(); rr(px, py, PW, PH, 70); ctx.clip();
-  ctx.fillStyle = '#0b0f19'; ctx.fillRect(px, py, PW, PH);
-  // status bar
-  ctx.fillStyle = '#fff'; ctx.font = `700 26px ${FONT}`; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-  ctx.fillText('01:15', px + 56, py + 46);
-  ctx.textAlign = 'right'; ctx.fillText('5G ▮▮▮ 🔋', px + PW - 50, py + 46);
-  ctx.fillStyle = '#000'; rr(W / 2 - 80, py + 22, 160, 46, 23); ctx.fill(); // dynamic island
-  // browser bar
-  const by = py + 88;
-  ctx.fillStyle = '#1f2937'; rr(px + 24, by, PW - 48, 74, 37); ctx.fill();
-  const typed = time < pt.s ? 0 : Math.floor(clamp((time - pt.s - 0.1) / (pt.typeEnd - pt.s - 0.1)) * URL_TXT.length);
-  ctx.font = `600 32px ${FONT}`; ctx.textAlign = 'left'; ctx.fillStyle = typed ? '#fff' : '#9ca3af';
-  const shown = typed ? URL_TXT.slice(0, typed) : 'Ara veya adres yaz';
-  ctx.fillText((time > pt.loaded ? '🔒 ' : '🔎 ') + shown, px + 54, by + 39);
-  if (time < pt.load && Math.floor(time * 3) % 2 === 0) {
-    const tw = ctx.measureText((time > pt.loaded ? '🔒 ' : '🔎 ') + shown).width;
-    ctx.fillStyle = '#60a5fa'; ctx.fillRect(px + 58 + tw, by + 18, 4, 40);
-  }
-  // loading bar
-  if (time > pt.load && time < pt.loaded + 0.2) {
-    const lp = clamp((time - pt.load) / 0.45);
-    ctx.fillStyle = C.orange; ctx.fillRect(px + 24, by + 80, (PW - 48) * easeOut(lp), 6);
-  }
-  // page content
-  const cy0 = by + 96;
-  if (time > pt.load + 0.15) {
-    const fade = clamp((time - pt.load - 0.15) / 0.3);
-    const scroll = easeOut(clamp((time - pt.loaded - 0.5) / 1.2)) * 120;
-    ctx.save(); ctx.globalAlpha = alpha * fade; ctx.translate(0, -scroll);
-    // top emergency bar
-    const tg = ctx.createLinearGradient(px, 0, px + PW, 0);
-    tg.addColorStop(0, '#dc2626'); tg.addColorStop(.5, '#ea580c'); tg.addColorStop(1, '#d97706');
-    ctx.fillStyle = tg; ctx.fillRect(px, cy0, PW, 50);
-    ctx.fillStyle = '#fff'; ctx.font = `800 21px ${FONT}`; ctx.textAlign = 'left';
-    ctx.fillText('● İZMİR YOL SERVİS • 7/24 ACİL YOL YARDIM', px + 22, cy0 + 26);
-    // nav
-    ctx.fillStyle = 'rgba(15,23,42,0.95)'; ctx.fillRect(px, cy0 + 50, PW, 96);
-    const lg = ctx.createLinearGradient(px + 24, 0, px + 84, 0); lg.addColorStop(0, C.orange); lg.addColorStop(1, C.amber);
-    ctx.fillStyle = lg; rr(px + 24, cy0 + 68, 60, 60, 14); ctx.fill();
-    ctx.font = `34px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('🔧', px + 54, cy0 + 100);
-    ctx.textAlign = 'left'; ctx.fillStyle = '#fff'; ctx.font = `900 30px ${FONT}`;
-    ctx.fillText('İzmir Yol Servis', px + 100, cy0 + 88);
-    ctx.fillStyle = C.amber; ctx.font = `700 19px ${FONT}`;
-    ctx.fillText('7/24 Mobil Oto Servis', px + 100, cy0 + 118);
-    // hero photo
-    const hy = cy0 + 146, hh = 520;
-    ctx.save(); ctx.beginPath(); ctx.rect(px, hy, PW, hh); ctx.clip();
-    const im = IMG.usta, s = Math.max(PW / im.width, hh / im.height) * 1.05;
-    ctx.drawImage(im, px + PW / 2 - im.width * s / 2, hy + hh / 2 - im.height * s / 2, im.width * s, im.height * s);
-    const hg = ctx.createLinearGradient(0, hy, 0, hy + hh); hg.addColorStop(0, 'rgba(11,15,25,0.55)'); hg.addColorStop(1, 'rgba(11,15,25,0.98)');
-    ctx.fillStyle = hg; ctx.fillRect(px, hy, PW, hh);
-    ctx.restore();
-    ctx.fillStyle = 'rgba(16,185,129,0.25)'; rr(px + 30, hy + 40, 330, 46, 23); ctx.fill();
-    ctx.fillStyle = '#6ee7b7'; ctx.font = `800 20px ${FONT}`; ctx.fillText('● İzmir 7/24 Sahada & Nöbetçi', px + 48, hy + 64);
-    ctx.fillStyle = '#fff'; ctx.font = `900 50px ${FONT}`;
-    ctx.fillText('İzmir Yol Yardım &', px + 30, hy + 150);
-    ctx.fillStyle = '#fbbf24'; ctx.fillText('İzmir Mobil Oto', px + 30, hy + 210); ctx.fillText('Servis', px + 30, hy + 270);
-    ctx.fillStyle = '#fdba74'; ctx.font = `800 21px ${FONT}`;
-    ctx.fillText('7/24 ACİL YOL SERVİSİ • YERİNDE BAKIM & AKÜ', px + 30, hy + 326);
-    // CTA buttons
-    const btY = hy + 370;
-    const tapP = clamp((time - pt.tap) / 0.3);
-    const press = time > pt.tap ? 1 - 0.06 * Math.sin(tapP * Math.PI) : 1;
-    ctx.save(); ctx.translate(px + 30 + 140, btY + 44); ctx.scale(press, press);
-    const rg = ctx.createLinearGradient(-140, 0, 140, 0); rg.addColorStop(0, '#dc2626'); rg.addColorStop(1, '#ea580c');
-    ctx.fillStyle = rg; rr(-140, -44, 280, 88, 24); ctx.fill();
-    ctx.fillStyle = '#fff'; ctx.font = `900 28px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('📞 Hemen Ara', 0, 2);
-    ctx.restore();
-    ctx.fillStyle = '#059669'; rr(px + PW - 30 - 280, btY, 280, 88, 24); ctx.fill();
-    ctx.fillStyle = '#fff'; ctx.font = `900 28px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('📍 Konum Gönder', px + PW - 30 - 140, btY + 46);
-    // info cards
-    ctx.textAlign = 'left';
-    [['⏱️', '15-25 Dk Varış'], ['🛡️', 'Belgeli Usta'], ['💳', 'Uygun Fiyat']].forEach((c, i) => {
-      const cx = px + 30 + i * 196, cyy = btY + 120;
-      ctx.fillStyle = '#111827'; rr(cx, cyy, 180, 96, 18); ctx.fill();
-      ctx.strokeStyle = '#1f2937'; ctx.lineWidth = 2; ctx.stroke();
-      ctx.font = `30px ${FONT}`; ctx.fillStyle = '#fff'; ctx.fillText(c[0], cx + 16, cyy + 34);
-      ctx.font = `800 19px ${FONT}`; ctx.fillText(c[1], cx + 16, cyy + 74);
-    });
-    ctx.restore();
-    // tap ripple
-    if (time > pt.tap) {
-      const rp = clamp((time - pt.tap) / 0.6);
-      const tx = px + 170, ty = btY + 44 - scroll;
-      ctx.strokeStyle = `rgba(255,255,255,${0.9 * (1 - rp)})`; ctx.lineWidth = 6;
-      ctx.beginPath(); ctx.arc(tx, ty, 20 + rp * 80, 0, 7); ctx.stroke();
-      ctx.fillStyle = `rgba(255,255,255,${0.5 * (1 - rp)})`; ctx.beginPath(); ctx.arc(tx, ty, 26, 0, 7); ctx.fill();
-    }
-  }
-  ctx.restore(); // screen clip
-  // home indicator
-  ctx.fillStyle = 'rgba(255,255,255,0.7)'; rr(W / 2 - 90, py + PH - 26, 180, 8, 4); ctx.fill();
-  ctx.restore();
-}
-
-// --- End card ---
+// ======================================================================
+// 8) END CARD
+// ======================================================================
 function drawEnd(time) {
   const p = time - END_START;
-  // background: blurred mechanic photo + brand gradient
-  drawCover(IMG.s09, 1.2 + p * 0.02, .5, .5, 1, 26);
-  const g = ctx.createLinearGradient(0, 0, 0, H);
-  g.addColorStop(0, 'rgba(11,15,25,0.88)'); g.addColorStop(0.5, 'rgba(11,15,25,0.72)'); g.addColorStop(1, 'rgba(11,15,25,0.95)');
-  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-  // glow
-  const gl = ctx.createRadialGradient(W / 2, 560, 10, W / 2, 560, 520);
-  gl.addColorStop(0, 'rgba(249,115,22,0.35)'); gl.addColorStop(1, 'rgba(249,115,22,0)');
-  ctx.fillStyle = gl; ctx.fillRect(0, 0, W, H);
+  drawCover(IMG.s09, 1.05, .5, .5, 1);
+  ctx.fillStyle = 'rgba(11,15,25,0.92)';
+  ctx.fillRect(0, 0, W, H);
 
-  const st = (d) => spring(clamp((p - d) / 0.7));
+  // Logo
+  const s = easeOut(clamp(p / 0.4));
   ctx.save();
-  // logo
-  const s1 = st(0.05);
-  ctx.translate(W / 2, 520); ctx.scale(s1, s1); ctx.rotate((1 - s1) * -0.6);
-  const lg = ctx.createLinearGradient(-110, -110, 110, 110); lg.addColorStop(0, C.orange); lg.addColorStop(1, C.amber);
-  ctx.shadowColor = 'rgba(249,115,22,0.6)'; ctx.shadowBlur = 60;
-  ctx.fillStyle = lg; rr(-110, -110, 220, 220, 52); ctx.fill();
-  ctx.shadowBlur = 0; ctx.fillStyle = C.dark; rr(-98, -98, 196, 196, 44); ctx.fill();
-  ctx.font = `120px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('🔧', 0, 8);
+  ctx.translate(W / 2, 340);
+  ctx.scale(s, s);
+  const lg = ctx.createLinearGradient(-70, -70, 70, 70);
+  lg.addColorStop(0, C.orange); lg.addColorStop(1, C.amber);
+  ctx.fillStyle = lg;
+  rr(-70, -70, 140, 140, 36);
+  ctx.fill();
+  ctx.fillStyle = '#0b0f19';
+  rr(-60, -60, 120, 120, 30);
+  ctx.fill();
+  ctx.font = `74px ${FONT}`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🔧', 0, 4);
   ctx.restore();
 
-  const fadeUp = (d, y) => { const k = easeOut(clamp((p - d) / 0.5)); ctx.globalAlpha = k; return y + (1 - k) * 50; };
+  textShadowed('İZMİR YOL SERVİS', W / 2, 470, 56, '#fff', 900);
+  textShadowed('7/24 Mobil Oto Servis & Yol Yardım', W / 2, 530, 26, '#fbbf24', 700);
+
+  // Website Pill
+  const pulse = 1 + 0.02 * Math.sin(p * 5);
   ctx.save();
-  let y = fadeUp(0.3, 740); textShadowed('İZMİR YOL SERVİS', W / 2, y, 96, '#fff', 900, 'center', 0);
-  y = fadeUp(0.45, 830); textShadowed('7/24 Mobil Oto Servis & Yol Yardım', W / 2, y, 46, '#fbbf24', 800, 'center', 0);
-  // URL pill
-  y = fadeUp(0.65, 975);
-  const pulse = 1 + 0.025 * Math.sin(p * 6);
-  ctx.save(); ctx.translate(W / 2, y); ctx.scale(pulse, pulse);
-  const ug = ctx.createLinearGradient(-430, 0, 430, 0); ug.addColorStop(0, '#ea580c'); ug.addColorStop(1, '#f59e0b');
-  ctx.shadowColor = 'rgba(249,115,22,0.55)'; ctx.shadowBlur = 50;
-  ctx.fillStyle = ug; rr(-430, -72, 860, 144, 72); ctx.fill(); ctx.shadowBlur = 0;
-  textShadowed('🌐 izmiryolservis.com.tr', 0, 4, 62, '#fff', 900, 'center', 0);
+  ctx.translate(W / 2, 630);
+  ctx.scale(pulse, pulse);
+  const ug = ctx.createLinearGradient(-260, 0, 260, 0);
+  ug.addColorStop(0, '#ea580c'); ug.addColorStop(1, '#f59e0b');
+  ctx.fillStyle = ug;
+  rr(-260, -42, 520, 84, 42);
+  ctx.fill();
+  textShadowed('🌐 izmiryolservis.com.tr', 0, 4, 34, '#fff', 900);
   ctx.restore();
-  // phone
-  y = fadeUp(0.85, 1135); textShadowed('📞 0536 429 08 61', W / 2, y, 76, '#fff', 900, 'center', 0);
-  // checklist
-  const items = ['✅  Belgeli Ustalar', '⏱️  15 Dakikada Kapında', '💸  Uygun Fiyat • Kaliteli Hizmet', '🔧  Bakım + Tamir Yerinde'];
+
+  // Phone Callout
+  textShadowed('📞 0536 429 08 61', W / 2, 740, 44, '#fff', 900);
+
+  // Checklist
+  const items = [
+    '✅  Belgeli Uzman Ustalar',
+    '⏱️  15 Dakikada Kapında',
+    '💸  Uygun Fiyat & Garantili İşçilik',
+    '🔧  Kapıda Periyodik Bakım & Tamir'
+  ];
   items.forEach((it, i) => {
-    const yy = fadeUp(1.05 + i * 0.18, 1270 + i * 82);
-    ctx.font = `800 46px ${FONT}`; ctx.textAlign = 'left'; ctx.fillStyle = '#e5e7eb'; ctx.textBaseline = 'middle';
-    ctx.fillText(it, 250, yy);
+    ctx.font = `800 26px ${FONT}`;
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#e2e8f0';
+    ctx.fillText(it, 140, 830 + i * 50);
   });
-  // CTA
-  y = fadeUp(1.9, 1640);
-  const bl = 0.75 + 0.25 * Math.sin(p * 5);
-  ctx.fillStyle = `rgba(16,185,129,${bl})`; rr(W / 2 - 400, y - 56, 800, 112, 56); ctx.fill();
-  textShadowed('Hemen Ara ya da WhatsApp\'tan Yaz!', W / 2, y + 2, 44, '#fff', 900, 'center', 0);
-  ctx.restore();
+
+  // Action CTA Button
+  const ctaY = 1080;
+  ctx.fillStyle = '#10b981';
+  rr(W / 2 - 250, ctaY - 32, 500, 64, 32);
+  ctx.fill();
+  textShadowed('Hemen Ara ya da WhatsApp\'tan Yaz!', W / 2, ctaY + 2, 24, '#fff', 800);
 }
 
 // ======================================================================
-// 7) FRAME RENDER
+// 9) FRAME RENDER (Takes ~1.5ms per frame)
 // ======================================================================
-let frameNo = 0;
 function render(time) {
-  frameNo++;
-  ctx.globalAlpha = 1; ctx.filter = 'none';
-  ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
-  // active shots (with crossfade)
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, W, H);
+
+  // Active shot
   for (let i = 0; i < SHOTS.length; i++) {
     const s = SHOTS[i];
-    if (time < s.a - 0.001 || time > s.b + XF) continue;
-    const next = SHOTS[i + 1];
-    let alpha = 1;
-    if (i > 0 && time < s.a + XF) alpha = clamp((time - s.a) / XF);
-    if (s.end) drawEnd(time);
-    else if (s.phone) drawPhone(time, alpha);
-    else drawShotImage(s, time, i === 0 ? 1 : alpha);
-  }
-  if (time < END_START) {
-    grade();
-    drawWatermark(time);
-    drawHook(time);
-    drawVaktimYok(time);
-    drawBadges(time);
-    drawCaption(time);
-  } else {
-    ctx.save(); ctx.globalAlpha = 0.04; ctx.drawImage(grains[(frameNo >> 1) % 4], 0, 0, W, H); ctx.restore();
-  }
-  // whip-flash on big transitions
-  [L.m4.start - 0.02, L.m5.start - 0.05, END_START].forEach(tt => {
-    const d = Math.abs(time - tt);
-    if (d < 0.12) { ctx.fillStyle = `rgba(255,255,255,${0.35 * (1 - d / 0.12)})`; ctx.fillRect(0, 0, W, H); }
-  });
-  // fade in / out
-  if (time < 0.25) { ctx.fillStyle = `rgba(0,0,0,${1 - time / 0.25})`; ctx.fillRect(0, 0, W, H); }
-  if (time > TOTAL - 0.4) { ctx.fillStyle = `rgba(0,0,0,${clamp((time - (TOTAL - 0.4)) / 0.4)})`; ctx.fillRect(0, 0, W, H); }
-}
-
-// ======================================================================
-// 8) AUDIO ENGINE (voices + procedural lo-fi music + SFX + ambience)
-// ======================================================================
-function buildAudio(ac, out, t0) {
-  const master = ac.createGain(); master.gain.value = 0.95;
-  const comp = ac.createDynamicsCompressor();
-  comp.threshold.value = -16; comp.ratio.value = 3.5; comp.attack.value = 0.005; comp.release.value = 0.2;
-  master.connect(comp); comp.connect(out);
-
-  const noiseBuf = (() => { const b = ac.createBuffer(1, ac.sampleRate * 2, ac.sampleRate); const d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; return b; })();
-  const brownBuf = (() => { const b = ac.createBuffer(1, ac.sampleRate * 4, ac.sampleRate); const d = b.getChannelData(0); let l = 0; for (let i = 0; i < d.length; i++) { l = (l + 0.02 * (Math.random() * 2 - 1)) / 1.02; d[i] = l * 3.5; } return b; })();
-  function noise(when, dur, buf = noiseBuf) { const s = ac.createBufferSource(); s.buffer = buf; s.loop = true; s.start(when); s.stop(when + dur); return s; }
-
-  // --- VOICE BUS: HPF -> presence EQ -> small room reverb ---
-  const vIn = ac.createGain();
-  const hp = ac.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 95;
-  const pres = ac.createBiquadFilter(); pres.type = 'peaking'; pres.frequency.value = 3200; pres.gain.value = 3; pres.Q.value = 0.9;
-  const warm = ac.createBiquadFilter(); warm.type = 'lowshelf'; warm.frequency.value = 220; warm.gain.value = 2.5;
-  const vOut = ac.createGain(); vOut.gain.value = 1.0;
-  vIn.connect(hp); hp.connect(warm); warm.connect(pres); pres.connect(vOut); vOut.connect(master);
-  const conv = ac.createConvolver();
-  conv.buffer = (() => { const len = ac.sampleRate * 0.5; const b = ac.createBuffer(2, len, ac.sampleRate); for (let c = 0; c < 2; c++) { const d = b.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3); } return b; })();
-  const wet = ac.createGain(); wet.gain.value = 0.07; pres.connect(conv); conv.connect(wet); wet.connect(master);
-  const analyser = ac.createAnalyser(); analyser.fftSize = 512; pres.connect(analyser);
-
-  LINES.forEach(l => {
-    const v = ASSETS.voice[l.id];
-    const bin = atob(v.b64); const n = bin.length / 2;
-    const buf = ac.createBuffer(1, n, v.sr); const d = buf.getChannelData(0);
-    for (let i = 0; i < n; i++) { let s = bin.charCodeAt(i * 2) | (bin.charCodeAt(i * 2 + 1) << 8); if (s >= 32768) s -= 65536; d[i] = s / 32768; }
-    const src = ac.createBufferSource(); src.buffer = buf;
-    const g = ac.createGain(); g.gain.value = 1;
-    const pan = ac.createStereoPanner(); pan.pan.value = l.sp === 'E' ? -0.12 : 0.12; // subtle stereo placement
-    src.connect(g); g.connect(pan); pan.connect(vIn); src.start(t0 + l.start);
-  });
-
-  // --- SFX ---
-  function sigh(when) { // exhausted exhale
-    const n = noise(when, 1.6); const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 0.8;
-    bp.frequency.setValueAtTime(1500, when); bp.frequency.exponentialRampToValueAtTime(500, when + 1.4);
-    const g = ac.createGain(); g.gain.setValueAtTime(0, when); g.gain.linearRampToValueAtTime(0.32, when + 0.18); g.gain.exponentialRampToValueAtTime(0.001, when + 1.5);
-    n.connect(bp); bp.connect(g); g.connect(vIn);
-  }
-  function whoosh(when, vol = 0.22) {
-    const n = noise(when, 0.6); const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 1.2;
-    bp.frequency.setValueAtTime(300, when); bp.frequency.exponentialRampToValueAtTime(4000, when + 0.28); bp.frequency.exponentialRampToValueAtTime(800, when + 0.55);
-    const g = ac.createGain(); g.gain.setValueAtTime(0, when); g.gain.linearRampToValueAtTime(vol, when + 0.22); g.gain.exponentialRampToValueAtTime(0.001, when + 0.58);
-    n.connect(bp); bp.connect(g); g.connect(master);
-  }
-  function ding(when, vol = 0.18) {
-    [1318.5, 1975.5].forEach((f, i) => { const o = ac.createOscillator(); o.type = 'sine'; o.frequency.value = f; const g = ac.createGain(); const w = when + i * 0.09; g.gain.setValueAtTime(0, w); g.gain.linearRampToValueAtTime(vol, w + 0.01); g.gain.exponentialRampToValueAtTime(0.001, w + 0.9); o.connect(g); g.connect(master); o.start(w); o.stop(w + 1); });
-  }
-  function pop(when, vol = 0.16) {
-    const o = ac.createOscillator(); o.type = 'sine'; o.frequency.setValueAtTime(520, when); o.frequency.exponentialRampToValueAtTime(980, when + 0.08);
-    const g = ac.createGain(); g.gain.setValueAtTime(vol, when); g.gain.exponentialRampToValueAtTime(0.001, when + 0.14); o.connect(g); g.connect(master); o.start(when); o.stop(when + 0.16);
-  }
-  function click(when, vol = 0.09) {
-    const n = noise(when, 0.03); const hp2 = ac.createBiquadFilter(); hp2.type = 'highpass'; hp2.frequency.value = 2500;
-    const g = ac.createGain(); g.gain.setValueAtTime(vol, when); g.gain.exponentialRampToValueAtTime(0.001, when + 0.03); n.connect(hp2); hp2.connect(g); g.connect(master);
-  }
-  function stamp(when) {
-    const o = ac.createOscillator(); o.type = 'sine'; o.frequency.setValueAtTime(140, when); o.frequency.exponentialRampToValueAtTime(45, when + 0.25);
-    const g = ac.createGain(); g.gain.setValueAtTime(0.45, when); g.gain.exponentialRampToValueAtTime(0.001, when + 0.3); o.connect(g); g.connect(master); o.start(when); o.stop(when + 0.32);
-    click(when, 0.2);
-  }
-
-  sigh(t0 + L.e1.start - 0.55);
-  whoosh(t0 + L.m4.start - 0.25); whoosh(t0 + L.m5.start - 0.28); whoosh(t0 + END_START - 0.25, 0.3);
-  const pt = phoneTimes();
-  for (let i = 1; i <= URL_TXT.length; i++) click(t0 + pt.s + 0.1 + (pt.typeEnd - pt.s - 0.1) * i / URL_TXT.length);
-  ding(t0 + pt.loaded);
-  click(t0 + pt.tap, 0.16);
-  BADGES.forEach(b => pop(t0 + b.a));
-  const vw = L.e6.words.find(x => x.w === 'vaktim'); if (vw) stamp(t0 + vw.t);
-  ding(t0 + END_START + 0.65, 0.12);
-
-  // --- AMBIENCE (seaside café / street) ---
-  const amb = noise(t0, END_START + 0.5, brownBuf); const alp = ac.createBiquadFilter(); alp.type = 'lowpass'; alp.frequency.value = 700;
-  const ag = ac.createGain(); ag.gain.setValueAtTime(0, t0); ag.gain.linearRampToValueAtTime(0.10, t0 + 0.6); ag.gain.setValueAtTime(0.10, t0 + END_START - 0.4); ag.gain.linearRampToValueAtTime(0, t0 + END_START + 0.4);
-  const lfo = ac.createOscillator(); lfo.frequency.value = 0.13; const lg = ac.createGain(); lg.gain.value = 0.035; lfo.connect(lg); lg.connect(ag.gain); lfo.start(t0); lfo.stop(t0 + TOTAL);
-  amb.connect(alp); alp.connect(ag); ag.connect(master);
-
-  // --- MUSIC: warm lo-fi groove, 88 BPM, ducked under dialogue, swells on end card ---
-  const mus = ac.createGain(); const mlp = ac.createBiquadFilter(); mlp.type = 'lowpass'; mlp.frequency.value = 3200;
-  mus.connect(mlp); mlp.connect(master);
-  mus.gain.setValueAtTime(0, t0); mus.gain.linearRampToValueAtTime(0.16, t0 + 0.8);
-  // light duck during speech
-  LINES.forEach(l => { mus.gain.setTargetAtTime(0.11, t0 + l.start - 0.05, 0.06); mus.gain.setTargetAtTime(0.16, t0 + l.end + 0.05, 0.25); });
-  mus.gain.setTargetAtTime(0.42, t0 + END_START, 0.25);
-  mus.gain.setValueAtTime(0.42, t0 + TOTAL - 0.9); mus.gain.linearRampToValueAtTime(0, t0 + TOTAL);
-
-  const BPM = 88, beat = 60 / BPM, bar = beat * 4;
-  const prog = [[48, 52, 55, 59, 62], [45, 48, 52, 55, 60], [41, 45, 48, 52, 57], [43, 47, 50, 53, 57]]; // Cmaj9 Am9 Fmaj9 G13-ish
-  function epiano(f, when, dur, vol) {
-    const o = ac.createOscillator(); o.type = 'sine'; o.frequency.value = f;
-    const o2 = ac.createOscillator(); o2.type = 'triangle'; o2.frequency.value = f * 2.003;
-    const g = ac.createGain(); const g2 = ac.createGain(); g2.gain.value = 0.18;
-    g.gain.setValueAtTime(0, when); g.gain.linearRampToValueAtTime(vol, when + 0.015); g.gain.exponentialRampToValueAtTime(vol * 0.35, when + 0.6); g.gain.exponentialRampToValueAtTime(0.0008, when + dur);
-    o.connect(g); o2.connect(g2); g2.connect(g); g.connect(mus);
-    o.start(when); o2.start(when); o.stop(when + dur + 0.05); o2.stop(when + dur + 0.05);
-  }
-  const mf = m => 440 * Math.pow(2, (m - 69) / 12);
-  for (let b = 0, when = t0; when < t0 + TOTAL; b++, when += bar) {
-    const ch = prog[b % 4];
-    ch.slice(1).forEach((m, i) => epiano(mf(m + 12), when + i * 0.012, bar * 0.95, 0.07));
-    epiano(mf(ch[1] + 12), when + beat * 2.5, beat * 1.4, 0.04);
-    // bass
-    [0, 2.5].forEach(off => { const o = ac.createOscillator(); o.type = 'sine'; o.frequency.value = mf(ch[0] - 12); const g = ac.createGain(); const w = when + off * beat; g.gain.setValueAtTime(0, w); g.gain.linearRampToValueAtTime(0.32, w + 0.02); g.gain.exponentialRampToValueAtTime(0.001, w + beat * 1.3); o.connect(g); g.connect(mus); o.start(w); o.stop(w + beat * 1.4); });
-    for (let k = 0; k < 4; k++) {
-      const w = when + k * beat;
-      if (k === 0 || k === 2) { // kick
-        const o = ac.createOscillator(); o.frequency.setValueAtTime(120, w); o.frequency.exponentialRampToValueAtTime(42, w + 0.18);
-        const g = ac.createGain(); g.gain.setValueAtTime(0.55, w); g.gain.exponentialRampToValueAtTime(0.001, w + 0.3); o.connect(g); g.connect(mus); o.start(w); o.stop(w + 0.32);
-      }
-      if (k === 1 || k === 3) { // soft snare
-        const n = noise(w, 0.2); const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1800; bp.Q.value = 0.7;
-        const g = ac.createGain(); g.gain.setValueAtTime(0.16, w); g.gain.exponentialRampToValueAtTime(0.001, w + 0.18); n.connect(bp); bp.connect(g); g.connect(mus);
-      }
-      [0, 0.5].forEach(h => { // hats (swing)
-        const hw = w + (h ? beat * 0.58 : 0); const n = noise(hw, 0.05); const hpf = ac.createBiquadFilter(); hpf.type = 'highpass'; hpf.frequency.value = 7000;
-        const g = ac.createGain(); g.gain.setValueAtTime(h ? 0.035 : 0.05, hw); g.gain.exponentialRampToValueAtTime(0.001, hw + 0.045); n.connect(hpf); hpf.connect(g); g.connect(mus);
-      });
+    if (time >= s.a && time < s.b) {
+      if (s.end) drawEnd(time);
+      else if (s.phone) drawPhone(time, 1);
+      else drawShotImage(s, time, 1);
+      break;
     }
   }
-  return analyser;
+
+  if (time < END_START) {
+    ctx.drawImage(vignette, 0, 0);
+    drawWatermark(time);
+    drawBadges(time);
+    drawCaption(time);
+  }
+
+  // Fade out at end
+  if (time > TOTAL - 0.4) {
+    ctx.fillStyle = `rgba(0,0,0,${clamp((time - (TOTAL - 0.4)) / 0.4)})`;
+    ctx.fillRect(0, 0, W, H);
+  }
 }
 
 // ======================================================================
-// 9) PLAYBACK / RECORD
+// 10) PLAYBACK & RECORDING
 // ======================================================================
 let running = false;
 async function start(record) {
-  if (running) return; running = true;
+  if (running) return;
+  running = true;
   await loadImages();
-  const ac = new AudioContext({ sampleRate: 48000 });
-  await ac.resume();
+
+  // Load clean master soundtrack WAV
+  const ac = new (window.AudioContext || window.webkitAudioContext)();
+  const rawWav = atob(ASSETS.soundtrack);
+  const ab = new ArrayBuffer(rawWav.length);
+  const u8 = new Uint8Array(ab);
+  for (let i = 0; i < rawWav.length; i++) u8[i] = rawWav.charCodeAt(i);
+  const audioBuffer = await ac.decodeAudioData(ab);
+
   const dest = ac.createMediaStreamDestination();
-  const out = ac.createGain(); out.connect(dest); if (!record || window.__PREVIEW_AUDIO) out.connect(ac.destination);
-  const t0 = ac.currentTime + 0.6;
-  const analyser = buildAudio(ac, out, t0);
-  const td = new Uint8Array(analyser.fftSize);
+  const sourceNode = ac.createBufferSource();
+  sourceNode.buffer = audioBuffer;
+  sourceNode.connect(dest);
+  if (!record) sourceNode.connect(ac.destination);
 
   let rec = null, chunks = [], mime = '';
   if (record) {
     const vs = canvas.captureStream(30);
     const stream = new MediaStream([...vs.getVideoTracks(), ...dest.stream.getAudioTracks()]);
-    mime = ['video/mp4;codecs=avc1.640028,mp4a.40.2', 'video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm'].find(m => MediaRecorder.isTypeSupported(m));
-    rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 9000000, audioBitsPerSecond: 192000 });
+    mime = ['video/mp4;codecs=avc1.640028,mp4a.40.2', 'video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4', 'video/webm'].find(m => MediaRecorder.isTypeSupported(m));
+    rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 8000000 });
     rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
   }
-  render(0);
+
+  sourceNode.start(0);
+  const t0 = performance.now();
+  if (record) rec.start(250);
+
   return new Promise(resolve => {
-    let started = false, frames = 0, slow = 0, last = performance.now();
+    let slowFrames = 0;
     function loop() {
-      const now = ac.currentTime;
-      if (record && !started && now >= t0 - 0.25) { rec.start(250); started = true; }
-      const tt = Math.max(0, now - t0);
-      analyser.getByteTimeDomainData(td);
-      let s = 0; for (let i = 0; i < td.length; i++) { const v = (td[i] - 128) / 128; s += v * v; }
-      voiceLevel = voiceLevel * 0.6 + Math.sqrt(s / td.length) * 4 * 0.4;
+      const now = performance.now();
+      const tt = (now - t0) / 1000;
+      const frameStart = performance.now();
       render(tt);
-      frames++; const pn = performance.now(); if (pn - last > 50) slow++; last = pn;
-      document.getElementById('status').textContent = `${tt.toFixed(1)} / ${TOTAL.toFixed(1)} sn`;
-      if (tt >= TOTAL + 0.15) {
+      if (performance.now() - frameStart > 33) slowFrames++;
+
+      document.getElementById('status').textContent = `${tt.toFixed(1)} / ${TOTAL.toFixed(1)} sn (Akıcı 30 FPS)`;
+
+      if (tt >= TOTAL) {
         running = false;
+        sourceNode.stop();
         if (record) {
-          rec.onstop = () => { const blob = new Blob(chunks, { type: mime }); window.__RESULT = { blob, mime, frames, slow, total: TOTAL }; resolve(window.__RESULT); };
+          rec.onstop = () => {
+            const blob = new Blob(chunks, { type: mime });
+            window.__RESULT = { blob, mime, slowFrames, total: TOTAL };
+            resolve(window.__RESULT);
+          };
           rec.stop();
-        } else resolve({ frames, slow });
-        ac.close && setTimeout(() => ac.close(), 500);
+        } else resolve({ slowFrames });
         return;
       }
       requestAnimationFrame(loop);
@@ -729,11 +557,11 @@ async function start(record) {
   });
 }
 
-// For headless renderer: returns blob in base64 chunks
 window.__getChunk = async (i, size) => {
   const b = window.__RESULT.blob.slice(i * size, (i + 1) * size);
   const buf = new Uint8Array(await b.arrayBuffer());
-  let bin = ''; for (let k = 0; k < buf.length; k += 32768) bin += String.fromCharCode.apply(null, buf.subarray(k, k + 32768));
+  let bin = '';
+  for (let k = 0; k < buf.length; k += 32768) bin += String.fromCharCode.apply(null, buf.subarray(k, k + 32768));
   return btoa(bin);
 };
 window.__start = start;
@@ -741,12 +569,14 @@ window.__TOTAL = TOTAL;
 
 document.getElementById('play').onclick = () => start(false);
 document.getElementById('rec').onclick = async () => {
-  window.__PREVIEW_AUDIO = true;
   const r = await start(true);
-  const a = document.createElement('a'); a.href = URL.createObjectURL(r.blob);
-  a.download = 'izmir-yol-servis-konusma-reels.' + (r.mime.includes('mp4') ? 'mp4' : 'webm'); a.click();
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(r.blob);
+  a.download = 'izmir-yol-servis-diyalog-reels.mp4';
+  a.click();
 };
-loadImages().then(() => render(1.2));
+
+loadImages().then(() => render(1.0));
 </script>
 </body>
 </html>
