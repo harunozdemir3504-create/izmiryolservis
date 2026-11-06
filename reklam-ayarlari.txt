@@ -1,0 +1,208 @@
+================================================================================
+          İZMİR YOL SERVİS - GOOGLE ADS 1. SIRA REKLAM AYARLARI PAKETİ
+================================================================================
+Hedef: En Yüksek Kalite Puanı (10/10), En Yüksek Tıklama Oranı (TO) ve En Düşük Tıklama Başı Maliyet (TBM).
+Web Sitesi: https://izmiryolservis.com.tr/
+Telefon: 0536 429 08 61
+
+
+--------------------------------------------------------------------------------
+1. EN ÇOK MÜŞTERİ GETİRECEK 30 ANAHTAR KELİME (SIRALI VE TAM EŞLEME)
+--------------------------------------------------------------------------------
+Not: Google Ads paneline hem Sıralı Eşleme ("...") hem de Tam Eşleme ([...]) 
+olarak eklemeniz, arama niyetini en dar hedefle yakalayarak gereksiz tıklamaları önler.
+
+Aşağıdaki bloğu doğrudan kopyalayıp Google Ads "Anahtar Kelimeler" kutusuna yapıştırın:
+
+"izmir yol yardım"
+[izmir yol yardım]
+"izmir oto çekici"
+[izmir oto çekici]
+"izmir mobil oto servis"
+[izmir mobil oto servis]
+"izmir akü takviye"
+[izmir akü takviye]
+"izmir oto kurtarma"
+[izmir oto kurtarma]
+"eve gelen tamirci izmir"
+[eve gelen tamirci izmir]
+"kapıda araç bakım izmir"
+[kapıda araç bakım izmir]
+"7/24 yol yardım izmir"
+[7/24 yol yardım izmir]
+"izmir en yakın çekici"
+[izmir en yakın çekici]
+"izmir acil yol yardım"
+[izmir acil yol yardım]
+"bornova yol yardım"
+[bornova yol yardım]
+"bornova oto çekici"
+[bornova oto çekici]
+"karşıyaka yol yardım"
+[karşıyaka yol yardım]
+"karşıyaka oto çekici"
+[karşıyaka oto çekici]
+"buca yol yardım"
+[buca yol yardım]
+"buca oto çekici"
+[buca oto çekici]
+"konak yol yardım"
+[konak yol yardım]
+"çiğli yol yardım"
+[çiğli yol yardım]
+"gaziemir yol yardım"
+[gaziemir yol yardım]
+"bayraklı yol yardım"
+[bayraklı yol yardım]
+"menemen yol yardım"
+[menemen yol yardım]
+"urla yol yardım"
+[urla yol yardım]
+"çeşme oto çekici"
+[çeşme oto çekici]
+"balçova yol yardım"
+[balçova yol yardım]
+"torbalı yol yardım"
+[torbalı yol yardım]
+"kemalpaşa yol yardım"
+[kemalpaşa yol yardım]
+"izmir mobil oto tamir"
+[izmir mobil oto tamir]
+"izmir yerinde araç tamiri"
+[izmir yerinde araç tamiri]
+"izmir oto elektrik yol yardım"
+[izmir oto elektrik yol yardım]
+"izmir mobil lastik tamiri"
+[izmir mobil lastik tamiri]
+
+
+--------------------------------------------------------------------------------
+2. BÜTÇENİZİ KORUYACAK 40 ADET NEGATİF ANAHTAR KELİME
+--------------------------------------------------------------------------------
+Not: Bu kelimeler reklamınızın işe yaramaz aramalarda (ücretsiz, iş arayanlar, 
+çıkmacılar, kiralık araç vb.) görünmesini engeller ve reklam bütçenizi %100 korur.
+
+Aşağıdaki listeyi kopyalayıp Google Ads "Negatif Anahtar Kelimeler" listesine ekleyin:
+
+ücretsiz
+bedava
+kiralık
+kiralama
+rent a car
+oto kiralama
+günlük kiralık
+iş ilanları
+iş ilanı
+eleman arayanlar
+şoför arayanlar
+maaşları
+usta arayanlar
+çırak
+kariyer
+çıkma parça
+hurda
+hurdacı
+yedek parça
+oto çıkmacı
+ikinci el parça
+pert araç
+hurda araç alımı
+sigorta sorgulama
+kasko sorgulama
+kaza tutanağı
+trafik cezası
+e-devlet
+çekici sorgulama
+ceza sorgulama
+oyun
+oyunu
+simulator
+video
+maket
+istanbul
+ankara
+bursa
+antalya
+aydın
+
+
+--------------------------------------------------------------------------------
+3. TIKLAMA ORANINI (TO) ZİRVEYE ÇIKARACAK 15 REKLAM BAŞLIĞI
+--------------------------------------------------------------------------------
+(Tümü Google Ads 30 karakter kuralına kesin olarak uygundur):
+
+Başlık 1 (21 Karakter):
+İzmir Yol Yardım 7/24
+
+Başlık 2 (22 Karakter):
+İzmir Mobil Oto Servis
+
+Başlık 3 (24 Karakter):
+15 Dk'da En Yakın Çekici
+
+Başlık 4 (25 Karakter):
+Kapıda Araç Bakım & Tamir
+
+Başlık 5 (21 Karakter):
+7/24 Acil Yol Servisi
+
+Başlık 6 (24 Karakter):
+İzmir Akü Takviye Servis
+
+Başlık 7 (22 Karakter):
+Eve Gelen Tamir Ustası
+
+Başlık 8 (21 Karakter):
+İzmir Acil Oto Çekici
+
+Başlık 9 (24 Karakter):
+Garantili Yerinde Onarım
+
+Başlık 10 (25 Karakter):
+Hemen Ara: 0536 429 08 61
+
+Başlık 11 (26 Karakter):
+Uygun Fiyatlı Oto Kurtarma
+
+Başlık 12 (26 Karakter):
+İzmir'de 7/24 Mobil Servis
+
+Başlık 13 (25 Karakter):
+Bilgisayarlı Arıza Tespit
+
+Başlık 14 (21 Karakter):
+Yolda Kalma Hemen Ara
+
+Başlık 15 (25 Karakter):
+Oto Kurtarma & Mobil Usta
+
+
+--------------------------------------------------------------------------------
+4. TIKLAMA ALDIRAN 4 ADET AÇIKLAMA METNİ
+--------------------------------------------------------------------------------
+(Tümü Google Ads 90 karakter kuralına kesin olarak uygundur):
+
+Açıklama 1 (84 Karakter):
+İzmir'de 7/24 acil yol yardım ve oto çekici. 15 dakikada yanınızdayız. Hemen arayın!
+
+Açıklama 2 (89 Karakter):
+Sanayiye gitmeyin! Mobil servis ustamız kapınıza gelsin, garantili tamir ve bakım yapsın.
+
+Açıklama 3 (87 Karakter):
+Akü bitti mi, yolda mı kaldınız? İzmir genelinde 7/24 acil mobil servis ve akü takviye.
+
+Açıklama 4 (86 Karakter):
+En uygun fiyatlı kayar kasa oto çekici ve yerinde araç onarımı. 7/24 tek tıkla arayın.
+
+
+--------------------------------------------------------------------------------
+5. 1. SIRA İÇİN TAVSİYE EDİLEN GOOGLE ADS KAMPANYA AYARLARI
+--------------------------------------------------------------------------------
+1. Konum Ayarı: Yalnızca "İzmir" seçilmeli. Gelişmiş konumlardan "Bu konumlarda bulunan veya bu konumlara düzenli olarak giden kişiler" seçeneğini işaretleyin (İzmir dışındaki ilgisiz tıklamaları engeller).
+2. Teklif Stratejisi: Kampanyayı ilk açarken "Tıklamaları En Üst Düzeye Çıkar" veya "Manuel TBM" ile başlatın. Kampanya veri topladıkça "Mutlak En Üst Sayfa Payı" hedefleyin.
+3. Reklam Uzantıları (Varlıklar):
+   - Telefon Uzantısı: 0536 429 08 61
+   - Site Bağlantıları: "Eve Gelen Tamirci", "7/24 Oto Çekici", "Akü Takviye Servisi", "Randevu Takvimi"
+   - Açıklama Metni Varlıkları: "15 Dk'da Konumda", "Garantili İşçilik", "Kredi Kartı Geçerlidir", "7/24 Nöbetçi Ekip"
+   - Yerel Konum Uzantısı: Google İşletme Profilinizi bağlayın.
+================================================================================
