@@ -8,7 +8,7 @@ echo.
 cd /d "%~dp0"
 
 echo [1/3] Dosyalar hazırlanıyor...
-git add index.html style.css script.js robots.txt sitemap.xml README.md images reels-assets
+git add -A
 
 echo [2/3] Değişiklikler kaydediliyor...
 git commit -m "Site güncelleme: Gerçek fotoğraflar ve düzenlemeler"
