@@ -1,6 +1,9 @@
-# Large video exports
+# Large video & audio exports
 *.mp4
 *.webm
+*.wav
+video-assets/
+reels-assets/
 
 # OS files
 Thumbs.db
