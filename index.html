@@ -106,23 +106,23 @@
     <!-- Top Emergency Bar -->
     <div class="bg-gradient-to-r from-red-600 via-orange-600 to-amber-600 text-white text-[11px] sm:text-xs md:text-sm py-1.5 sm:py-2 px-3 sm:px-4 shadow-sm">
       <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
-        <div class="flex items-center space-x-2 min-w-0">
+        <div class="flex items-center space-x-2">
           <span class="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5 flex-shrink-0">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-white"></span>
           </span>
-          <span class="font-bold tracking-wide uppercase truncate text-[11px] sm:text-xs">
-            İzmir Yol Servis • 7/24 Acil Yol Yardım & Mobil Servis
+          <span class="font-bold tracking-wide uppercase text-[11px] sm:text-xs whitespace-nowrap">
+            İzmir Yol Servisi <span class="hidden sm:inline">• 7/24 Acil Yol Yardım & Mobil Servis</span>
           </span>
         </div>
         
         <div class="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
-          <div class="hidden md:flex items-center space-x-1.5 text-[11px] bg-black/20 px-2 py-0.5 rounded-full">
+          <div class="hidden md:flex items-center space-x-1.5 text-[11px] bg-black/20 px-2.5 py-0.5 rounded-full whitespace-nowrap">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
             <span id="liveStatusText">Şu An Açık • 7/24 Sahadayız</span>
           </div>
-          <a href="tel:05364290861" class="flex items-center gap-1 font-extrabold text-white bg-black/40 hover:bg-black/60 px-2.5 py-1 rounded-full transition shadow text-[11px] sm:text-xs tracking-wider">
-            <i data-lucide="phone-call" class="w-3 h-3 text-yellow-300"></i>
+          <a href="tel:05364290861" class="flex items-center gap-1 font-extrabold text-white bg-black/40 hover:bg-black/60 px-2.5 py-1 rounded-full transition shadow text-[11px] sm:text-xs tracking-wider whitespace-nowrap flex-shrink-0">
+            <i data-lucide="phone-call" class="w-3 h-3 text-yellow-300 flex-shrink-0"></i>
             <span>0536 429 08 61</span>
           </a>
         </div>
@@ -132,64 +132,46 @@
     <!-- Main Navigation Header -->
     <header class="glass-nav border-b border-white/10">
       <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16 sm:h-20">
+        <div class="flex items-center justify-between gap-4 h-16 sm:h-20">
           <!-- Logo -->
-          <a href="#" class="flex items-center space-x-2 sm:space-x-3 group min-w-0">
+          <a href="#" class="flex items-center space-x-2.5 sm:space-x-3 group flex-shrink-0">
             <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 p-0.5 shadow-lg shadow-orange-500/20 group-hover:scale-105 transition-transform duration-300 flex-shrink-0">
               <div class="w-full h-full bg-[#0b0f19] rounded-[10px] flex items-center justify-center">
                 <i data-lucide="wrench" class="w-5 h-5 sm:w-6 sm:h-6 text-orange-400 transform -rotate-12 group-hover:rotate-0 transition-transform"></i>
               </div>
             </div>
-            <div class="min-w-0">
-              <div class="flex items-center gap-1.5">
-                <span class="font-heading font-black text-base sm:text-2xl text-white tracking-tight truncate">
-                  İZMİR <span class="text-orange-500">YOL SERVİS</span>
+            <div class="flex-shrink-0">
+              <div class="flex items-center gap-1.5 whitespace-nowrap">
+                <span class="font-heading font-black text-lg sm:text-2xl text-white tracking-tight whitespace-nowrap">
+                  İzmir <span class="text-orange-500">Yol Servisi</span>
                 </span>
-                <span class="text-[9px] sm:text-[10px] uppercase font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30 px-1 py-0.2 rounded flex-shrink-0">
+                <span class="text-[9px] sm:text-[10px] uppercase font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded flex-shrink-0">
                   7/24
                 </span>
               </div>
-              <div class="text-[10px] sm:text-xs text-slate-400 font-medium tracking-tight truncate flex items-center gap-1">
-                <span class="text-amber-400 font-bold">7/24 Yol Servis:</span>
-                <span class="text-white font-semibold">Mobil Tamir & Acil Çekici</span>
-                <span class="hidden md:inline text-slate-500">• Yetkili Servis Kalitesi</span>
+              <div class="text-[10px] sm:text-xs text-slate-400 font-medium tracking-tight whitespace-nowrap flex items-center gap-1">
+                <span class="text-amber-400 font-bold">7/24 Mobil Servis:</span>
+                <span class="text-white font-semibold">Yerinde Tamir & Acil Çekici</span>
               </div>
             </div>
           </a>
 
-          <!-- Desktop Navigation Links -->
-          <nav class="hidden lg:flex items-center space-x-6 xl:space-x-7 text-sm font-semibold text-slate-200">
-            <a href="#eve-gelen-tamirci" class="hover:text-orange-400 transition flex items-center gap-1.5 text-amber-400">
-              <i data-lucide="home" class="w-4 h-4 text-orange-500"></i> Eve Gelen Usta
-            </a>
-            <a href="#randevu-takvimi" class="hover:text-amber-400 transition flex items-center gap-1">
-              <i data-lucide="calendar" class="w-4 h-4 text-amber-400"></i> Randevu Takvimi
-            </a>
-            <a href="#hizmetler" class="hover:text-orange-400 transition flex items-center gap-1">
-              <i data-lucide="truck" class="w-4 h-4 text-slate-400"></i> Hizmetlerimiz
-            </a>
-            <a href="#kurumsal" class="hover:text-orange-400 transition flex items-center gap-1">
-              <i data-lucide="award" class="w-4 h-4 text-slate-400"></i> Servis Kalitemiz
-            </a>
-            <a href="#talep-robotu" class="hover:text-orange-400 transition flex items-center gap-1">
-              <i data-lucide="calculator" class="w-4 h-4 text-slate-400"></i> Hızlı Talep / Fiyat
-            </a>
-            <a href="#galeri" class="hover:text-orange-400 transition">Galeri</a>
-            <a href="#bolgeler" class="hover:text-orange-400 transition">Hizmet Bölgeleri</a>
-            <a href="#konum" class="hover:text-orange-400 transition flex items-center gap-1 text-amber-400">
-              <i data-lucide="map-pin" class="w-4 h-4 text-orange-500"></i> Harita & Konum
-            </a>
-            <a href="#iletisim" class="hover:text-orange-400 transition">İletişim</a>
+          <!-- Desktop Navigation Links (4 Ferah Link Tek Satırda) -->
+          <nav class="hidden lg:flex items-center gap-7 xl:gap-9 text-sm xl:text-base font-semibold text-slate-200 whitespace-nowrap flex-shrink-0">
+            <a href="#hizmetler" class="hover:text-orange-400 transition whitespace-nowrap">Hizmetlerimiz</a>
+            <a href="#galeri" class="hover:text-orange-400 transition whitespace-nowrap">Galeri</a>
+            <a href="#bolgeler" class="hover:text-orange-400 transition whitespace-nowrap">Hizmet Bölgeleri</a>
+            <a href="#iletisim" class="hover:text-orange-400 transition whitespace-nowrap">İletişim</a>
           </nav>
 
           <!-- Right Quick Action CTAs -->
-          <div class="hidden sm:flex items-center space-x-3">
-            <a href="https://wa.me/905364290861?text=Merhaba%20İzmir%20Yol%20Servis,%20yol%20yardım%20veya%20kapıda%20tamir%20hizmeti%20için%20ulaşıyorum." target="_blank" class="flex items-center gap-2 bg-emerald-600/90 hover:bg-emerald-500 text-white text-xs font-bold py-2.5 px-3.5 rounded-xl shadow-md shadow-emerald-900/30 transition transform hover:-translate-y-0.5">
-              <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <div class="hidden sm:flex items-center gap-2.5 lg:gap-3 flex-shrink-0 whitespace-nowrap">
+            <a href="https://wa.me/905364290861?text=Merhaba%20İzmir%20Yol%20Servis,%20yol%20yardım%20veya%20kapıda%20tamir%20hizmeti%20için%20ulaşıyorum." target="_blank" class="inline-flex items-center justify-center gap-2 bg-emerald-600/90 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold py-2.5 px-3.5 lg:px-4 rounded-xl shadow-md shadow-emerald-900/30 transition transform hover:-translate-y-0.5 whitespace-nowrap flex-shrink-0">
+              <i data-lucide="message-circle" class="w-4 h-4 flex-shrink-0"></i>
               <span>WhatsApp</span>
             </a>
-            <a href="tel:05364290861" class="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white text-xs sm:text-sm font-extrabold py-2.5 px-4 rounded-xl shadow-lg shadow-orange-500/25 transition transform hover:-translate-y-0.5">
-              <i data-lucide="phone" class="w-4 h-4 animate-bounce"></i>
+            <a href="tel:05364290861" class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white text-xs sm:text-sm font-extrabold py-2.5 px-3.5 lg:px-4 rounded-xl shadow-lg shadow-orange-500/25 transition transform hover:-translate-y-0.5 whitespace-nowrap flex-shrink-0">
+              <i data-lucide="phone" class="w-4 h-4 animate-bounce flex-shrink-0"></i>
               <span>0536 429 08 61</span>
             </a>
           </div>
@@ -206,46 +188,26 @@
         </div>
 
         <!-- Mobile Dropdown Menu -->
-        <div id="mobileMenu" class="hidden lg:hidden border-t border-slate-800 py-3 space-y-2 bg-[#0f172a]/95 backdrop-blur-xl px-2 rounded-b-2xl shadow-2xl max-h-[75vh] overflow-y-auto">
-          <a href="#eve-gelen-tamirci" class="mobile-nav-link flex items-center justify-between px-3 py-2 rounded-lg text-amber-400 font-bold bg-amber-500/10">
-            <span class="flex items-center gap-2 text-xs sm:text-sm"><i data-lucide="home" class="w-4 h-4"></i> Eve Gelen Tamir Ustası (Özel Servis)</span>
-            <span class="text-[10px] bg-amber-500 text-black font-extrabold px-1.5 py-0.5 rounded">VIP</span>
+        <div id="mobileMenu" class="hidden lg:hidden border-t border-slate-800 py-3 space-y-1.5 bg-[#0f172a]/95 backdrop-blur-xl px-3 rounded-b-2xl shadow-2xl">
+          <a href="#hizmetler" class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-slate-100 hover:bg-slate-800 font-semibold text-sm">
+            <i data-lucide="wrench" class="w-4 h-4 text-orange-400 flex-shrink-0"></i> Hizmetlerimiz
           </a>
-          <a href="#randevu-takvimi" class="mobile-nav-link flex items-center justify-between px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-800 font-medium text-xs sm:text-sm">
-            <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-4 h-4 text-emerald-400"></i> 7/24 Randevu & Müsaitlik Takvimi</span>
-            <span class="text-[10px] bg-emerald-500/30 text-emerald-300 border border-emerald-500/50 font-bold px-1.5 py-0.5 rounded">CANLI</span>
+          <a href="#galeri" class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-slate-100 hover:bg-slate-800 font-semibold text-sm">
+            <i data-lucide="image" class="w-4 h-4 text-orange-400 flex-shrink-0"></i> Galeri
           </a>
-          <a href="#hizmetler" class="mobile-nav-link flex items-center gap-2 px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-800 font-medium text-xs sm:text-sm">
-            <i data-lucide="truck" class="w-4 h-4 text-orange-400"></i> Çekici & Yol Yardım
+          <a href="#bolgeler" class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-slate-100 hover:bg-slate-800 font-semibold text-sm">
+            <i data-lucide="map-pin" class="w-4 h-4 text-orange-400 flex-shrink-0"></i> Hizmet Bölgeleri
           </a>
-          <a href="#kurumsal" class="mobile-nav-link flex items-center gap-2 px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-800 font-medium text-xs sm:text-sm">
-            <i data-lucide="award" class="w-4 h-4 text-orange-400"></i> Yetkili Servis Belgeleri & Standartlarımız
-          </a>
-          <a href="#talep-robotu" class="mobile-nav-link flex items-center gap-2 px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-800 font-medium text-xs sm:text-sm">
-            <i data-lucide="calculator" class="w-4 h-4 text-orange-400"></i> Hızlı Talep & Fiyat Al
-          </a>
-          <a href="#galeri" class="mobile-nav-link flex items-center gap-2 px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-800 font-medium text-xs sm:text-sm">
-            <i data-lucide="image" class="w-4 h-4 text-orange-400"></i> Gerçek Fotoğraflar
-          </a>
-          <a href="#bolgeler" class="mobile-nav-link flex items-center gap-2 px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-800 font-medium text-xs sm:text-sm">
-            <i data-lucide="map-pin" class="w-4 h-4 text-orange-400"></i> İzmir Hizmet İlçeleri
-          </a>
-          <a href="#konum" class="mobile-nav-link flex items-center gap-2 px-3 py-2 rounded-lg text-amber-400 hover:bg-slate-800 font-bold text-xs sm:text-sm">
-            <i data-lucide="navigation" class="w-4 h-4 text-amber-400"></i> Harita & Canlı Konum
-          </a>
-          <a href="#yorumlar" class="mobile-nav-link flex items-center gap-2 px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-800 font-medium text-xs sm:text-sm">
-            <i data-lucide="star" class="w-4 h-4 text-orange-400"></i> Müşteri Yorumları
-          </a>
-          <a href="#iletisim" class="mobile-nav-link flex items-center gap-2 px-3 py-2 rounded-lg text-slate-200 hover:bg-slate-800 font-medium text-xs sm:text-sm">
-            <i data-lucide="phone" class="w-4 h-4 text-orange-400"></i> İletişim & Konum
+          <a href="#iletisim" class="mobile-nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-slate-100 hover:bg-slate-800 font-semibold text-sm">
+            <i data-lucide="phone" class="w-4 h-4 text-orange-400 flex-shrink-0"></i> İletişim
           </a>
 
           <div class="pt-2 border-t border-slate-700/60 grid grid-cols-2 gap-2">
-            <a href="tel:05364290861" class="flex items-center justify-center gap-1.5 bg-orange-600 text-white py-2.5 rounded-xl font-bold text-xs sm:text-sm">
-              <i data-lucide="phone-call" class="w-4 h-4"></i> 0536 429 08 61
+            <a href="tel:05364290861" class="flex items-center justify-center gap-1.5 bg-orange-600 text-white py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap">
+              <i data-lucide="phone-call" class="w-4 h-4 flex-shrink-0"></i> 0536 429 08 61
             </a>
-            <a href="https://wa.me/905364290861" target="_blank" class="flex items-center justify-center gap-1.5 bg-emerald-600 text-white py-2.5 rounded-xl font-bold text-xs sm:text-sm">
-              <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp
+            <a href="https://wa.me/905364290861" target="_blank" class="flex items-center justify-center gap-1.5 bg-emerald-600 text-white py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap">
+              <i data-lucide="message-circle" class="w-4 h-4 flex-shrink-0"></i> WhatsApp
             </a>
           </div>
         </div>
@@ -300,26 +262,26 @@
             </div>
           </div>
 
-          <!-- Main Top Title (Google Ads 10/10 Quality Score Keyword Matching) -->
-          <h1 class="font-heading font-black text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tight sm:leading-[1.12] tracking-tight">
-            İzmir Yol Yardım & <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-300">İzmir Mobil Oto Servis</span>
+          <!-- Main Top Title -->
+          <h1 class="font-heading font-black text-2xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl text-white leading-tight sm:leading-[1.15] tracking-tight">
+            İzmir 7/24 Acil Yol Yardım & <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-300">Mobil Oto Servis</span>
           </h1>
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/15 border border-orange-500/40 text-amber-300 text-xs sm:text-sm font-extrabold tracking-wide uppercase mt-1">
-            <span class="w-2 h-2 rounded-full bg-orange-400 animate-ping"></span>
-            <span>7/24 Acil Yol Servisi • Yerinde Araç Bakım & Akü Takviye</span>
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/15 border border-orange-500/40 text-amber-300 text-xs sm:text-sm font-extrabold tracking-wide uppercase mt-1 max-w-full">
+            <span class="w-2 h-2 rounded-full bg-orange-400 animate-ping flex-shrink-0"></span>
+            <span>Yerinde Araç Bakım • Akü Takviye & Oto Çekici</span>
           </div>
 
           <!-- ================= MOBILE ABOVE-THE-FOLD INSTANT CTAs (ZERO SCROLL REQUIRED) ================= -->
           <div class="lg:hidden grid grid-cols-2 gap-2.5 my-3 pt-1">
             <!-- Hemen Ara -->
             <a href="tel:05364290861" class="pulse-emergency flex items-center justify-center gap-2 bg-gradient-to-r from-red-600 to-orange-600 text-white font-black text-xs sm:text-sm py-3 px-2 rounded-2xl shadow-xl shadow-red-600/40 border border-red-400/40 active:scale-95 transition whitespace-nowrap">
-              <i data-lucide="phone-call" class="w-4 h-4 animate-bounce"></i>
+              <i data-lucide="phone-call" class="w-4 h-4 animate-bounce flex-shrink-0"></i>
               <span>Hemen Ara</span>
             </a>
 
             <!-- WhatsApp Konum Gönder -->
             <a href="https://wa.me/905364290861?text=Merhaba%20İzmir%20Yol%20Servis,%20acil%20yol%20yardıma%20ihtiyacım%20var.%20Konumumu%20paylaşıyorum." target="_blank" class="pulse-whatsapp flex items-center justify-center gap-2 bg-emerald-600 text-white font-black text-xs sm:text-sm py-3 px-2 rounded-2xl shadow-xl shadow-emerald-700/40 border border-emerald-400/40 active:scale-95 transition whitespace-nowrap">
-              <i data-lucide="map-pin" class="w-4 h-4 text-emerald-200"></i>
+              <i data-lucide="map-pin" class="w-4 h-4 text-emerald-200 flex-shrink-0"></i>
               <span>Konum Gönder</span>
             </a>
           </div>
@@ -330,15 +292,15 @@
             
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
               <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 text-black text-xs sm:text-sm font-black uppercase tracking-wider shadow-lg">
-                <i data-lucide="home" class="w-4 h-4 text-black"></i> VIP ÖZEL SERVİS
+                <i data-lucide="home" class="w-4 h-4 text-black flex-shrink-0"></i> VIP ÖZEL SERVİS
               </span>
               <span class="text-amber-300 text-xs sm:text-sm font-black flex items-center gap-1.5">
-                <i data-lucide="sparkles" class="w-4 h-4 text-yellow-300"></i> Sanayide Sıra Beklemeye Son!
+                <i data-lucide="sparkles" class="w-4 h-4 text-yellow-300 flex-shrink-0"></i> Sanayide Sıra Beklemeye Son!
               </span>
             </div>
 
             <!-- Big Prominent Headline -->
-            <div class="font-heading font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white tracking-tight leading-tight">
+            <div class="font-heading font-black text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl text-white tracking-tight leading-tight">
               EVE & KAPINIZA GELEN <br>
               <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-300 to-orange-400">
                 BELGELİ TAMİR USTASI
@@ -372,22 +334,22 @@
           </p>
 
           <!-- 3 Quick Action CTAs with Bigger "Eve Usta Çağır" -->
-          <div class="flex flex-col sm:flex-row gap-3 pt-1 justify-center lg:justify-start">
+          <div class="flex flex-col sm:flex-row flex-wrap gap-3 pt-1 justify-center lg:justify-start">
             <!-- Call Button -->
-            <a href="tel:05364290861" class="pulse-emergency flex items-center justify-center gap-2.5 sm:gap-3 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-black text-base sm:text-lg py-3.5 sm:py-4 px-6 sm:px-7 rounded-2xl shadow-xl shadow-red-600/30 transition transform hover:-translate-y-1">
-              <i data-lucide="phone-call" class="w-5 h-5 sm:w-6 sm:h-6 animate-pulse"></i>
+            <a href="tel:05364290861" class="pulse-emergency flex items-center justify-center gap-2.5 sm:gap-3 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-black text-base sm:text-lg py-3.5 sm:py-4 px-5 sm:px-6 rounded-2xl shadow-xl shadow-red-600/30 transition transform hover:-translate-y-1 whitespace-nowrap">
+              <i data-lucide="phone-call" class="w-5 h-5 sm:w-6 sm:h-6 animate-pulse flex-shrink-0"></i>
               <span>0536 429 08 61'i Ara</span>
             </a>
 
             <!-- Home Mechanic Prominent Button -->
-            <a href="#eve-gelen-tamirci" class="flex items-center justify-center gap-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black font-black text-sm sm:text-base py-3.5 sm:py-4 px-6 rounded-2xl shadow-xl shadow-amber-500/25 transition transform hover:-translate-y-1">
-              <i data-lucide="home" class="w-5 h-5 text-black"></i>
+            <a href="#eve-gelen-tamirci" class="flex items-center justify-center gap-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black font-black text-sm sm:text-base py-3.5 sm:py-4 px-5 sm:px-6 rounded-2xl shadow-xl shadow-amber-500/25 transition transform hover:-translate-y-1 whitespace-nowrap">
+              <i data-lucide="home" class="w-5 h-5 text-black flex-shrink-0"></i>
               <span>EVE USTA ÇAĞIR</span>
             </a>
 
             <!-- WhatsApp Location Button -->
-            <a href="https://wa.me/905364290861?text=Merhaba%20İzmir%20Yol%20Servis,%20acil%20yol%20yardıma%20ihtiyacım%20var.%20Konumumu%20paylaşıyorum." target="_blank" class="pulse-whatsapp flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm sm:text-base py-3.5 sm:py-4 px-5 sm:px-6 rounded-2xl shadow-xl shadow-emerald-700/25 transition transform hover:-translate-y-1">
-              <i data-lucide="map-pin" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-200"></i>
+            <a href="https://wa.me/905364290861?text=Merhaba%20İzmir%20Yol%20Servis,%20acil%20yol%20yardıma%20ihtiyacım%20var.%20Konumumu%20paylaşıyorum." target="_blank" class="pulse-whatsapp flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm sm:text-base py-3.5 sm:py-4 px-5 sm:px-6 rounded-2xl shadow-xl shadow-emerald-700/25 transition transform hover:-translate-y-1 whitespace-nowrap">
+              <i data-lucide="map-pin" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-200 flex-shrink-0"></i>
               <span>Konum Gönder</span>
             </a>
           </div>
